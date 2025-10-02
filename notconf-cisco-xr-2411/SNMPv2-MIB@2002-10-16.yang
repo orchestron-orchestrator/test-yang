@@ -1,0 +1,194 @@
+module SNMPv2-MIB {
+  namespace "http://tail-f.com/ns/mibs/SNMPv2-MIB/200210160000Z";
+  prefix SNMPv2_MIB;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import SNMPv2-TC {
+    prefix SNMPv2_TC;
+  }
+
+  revision 2002-10-16 {
+    description
+      "";
+  }
+
+  tailf:id "";
+  tailf:snmp-mib-module-name "SNMPv2-MIB";
+
+  typedef sysDescrType {
+    type string {
+      length "min .. 255";
+    }
+  }
+
+  typedef sysContactType {
+    type string {
+      length "min .. 255";
+    }
+  }
+
+  typedef sysNameType {
+    type string {
+      length "min .. 255";
+    }
+  }
+
+  typedef sysLocationType {
+    type string {
+      length "min .. 255";
+    }
+  }
+
+  typedef sysServicesType {
+    type int32 {
+      range "0 .. 127";
+    }
+  }
+
+  typedef snmpEnableAuthenTrapsType {
+    type enumeration {
+      enum "enabled" {
+        value 1;
+      }
+      enum "disabled" {
+        value 2;
+      }
+    }
+  }
+
+  typedef sysORIndexType {
+    type int32 {
+      range "1 .. 2147483647";
+    }
+  }
+
+  container SNMPv2-MIB {
+    container system {
+      tailf:snmp-oid "1.3.6.1.2.1.1";
+      leaf sysDescr {
+        tailf:snmp-oid "1.3.6.1.2.1.1.1";
+        type sysDescrType;
+        config false;
+      }
+      leaf sysObjectID {
+        tailf:snmp-oid "1.3.6.1.2.1.1.2";
+        type yang:object-identifier;
+        config false;
+      }
+      leaf sysUpTime {
+        tailf:snmp-oid "1.3.6.1.2.1.1.3";
+        type yang:timeticks;
+        config false;
+      }
+      leaf sysContact {
+        tailf:snmp-oid "1.3.6.1.2.1.1.4";
+        type sysContactType;
+        default "";
+      }
+      leaf sysName {
+        tailf:snmp-oid "1.3.6.1.2.1.1.5";
+        type sysNameType;
+        default "";
+      }
+      leaf sysLocation {
+        tailf:snmp-oid "1.3.6.1.2.1.1.6";
+        type sysLocationType;
+        default "";
+      }
+      leaf sysServices {
+        tailf:snmp-oid "1.3.6.1.2.1.1.7";
+        type sysServicesType;
+        config false;
+      }
+      leaf sysORLastChange {
+        tailf:snmp-oid "1.3.6.1.2.1.1.8";
+        type yang:timestamp;
+        config false;
+      }
+    }
+    container snmp {
+      tailf:snmp-oid "1.3.6.1.2.1.11";
+      leaf snmpInPkts {
+        tailf:snmp-oid "1.3.6.1.2.1.11.1";
+        type yang:counter32;
+        config false;
+      }
+      leaf snmpInBadVersions {
+        tailf:snmp-oid "1.3.6.1.2.1.11.3";
+        type yang:counter32;
+        config false;
+      }
+      leaf snmpInBadCommunityNames {
+        tailf:snmp-oid "1.3.6.1.2.1.11.4";
+        type yang:counter32;
+        config false;
+      }
+      leaf snmpInBadCommunityUses {
+        tailf:snmp-oid "1.3.6.1.2.1.11.5";
+        type yang:counter32;
+        config false;
+      }
+      leaf snmpInASNParseErrs {
+        tailf:snmp-oid "1.3.6.1.2.1.11.6";
+        type yang:counter32;
+        config false;
+      }
+      leaf snmpEnableAuthenTraps {
+        tailf:snmp-oid "1.3.6.1.2.1.11.30";
+        type snmpEnableAuthenTrapsType;
+        default "disabled";
+      }
+      leaf snmpSilentDrops {
+        tailf:snmp-oid "1.3.6.1.2.1.11.31";
+        type yang:counter32;
+        config false;
+      }
+      leaf snmpProxyDrops {
+        tailf:snmp-oid "1.3.6.1.2.1.11.32";
+        type yang:counter32;
+        config false;
+      }
+    }
+    container snmpSet {
+      tailf:snmp-oid "1.3.6.1.6.3.1.1.6";
+      leaf snmpSetSerialNo {
+        tailf:snmp-oid "1.3.6.1.6.3.1.1.6.1";
+        type SNMPv2_TC:TestAndIncr;
+        config false;
+      }
+    }
+    container sysORTable {
+      list sysOREntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.2.1.1.9";
+        key "sysORIndex";
+        leaf sysORIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.1.9.1.1";
+          type sysORIndexType;
+        }
+        leaf sysORID {
+          tailf:snmp-oid "1.3.6.1.2.1.1.9.1.2";
+          type yang:object-identifier;
+          config false;
+        }
+        leaf sysORDescr {
+          tailf:snmp-oid "1.3.6.1.2.1.1.9.1.3";
+          type string {
+            length "0 .. 255";
+          }
+          config false;
+        }
+        leaf sysORUpTime {
+          tailf:snmp-oid "1.3.6.1.2.1.1.9.1.4";
+          type yang:timestamp;
+          config false;
+        }
+      }
+    }
+  }
+}

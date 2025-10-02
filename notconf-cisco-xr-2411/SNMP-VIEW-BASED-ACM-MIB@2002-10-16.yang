@@ -1,0 +1,210 @@
+module SNMP-VIEW-BASED-ACM-MIB {
+  namespace "http://tail-f.com/ns/mibs/SNMP-VIEW-BASED-ACM-MIB/200210160000Z";
+  prefix SNMP_VIEW_BASED_ACM_MIB;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import SNMPv2-TC {
+    prefix SNMPv2_TC;
+  }
+  import SNMP-FRAMEWORK-MIB {
+    prefix SNMP_FRAMEWORK_MIB;
+  }
+
+  revision 2002-10-16 {
+    description
+      "";
+  }
+
+  tailf:id "";
+  tailf:snmp-mib-module-name "SNMP-VIEW-BASED-ACM-MIB";
+
+  typedef vacmContextNameType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef vacmSecurityModelType {
+    type int32 {
+      range "1 .. 2147483647";
+    }
+  }
+
+  typedef vacmSecurityNameType {
+    type string {
+      length "1 .. 32";
+    }
+  }
+
+  typedef vacmGroupNameType {
+    type string {
+      length "1 .. 32";
+    }
+  }
+
+  typedef vacmAccessContextPrefixType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef vacmAccessContextMatchType {
+    type enumeration {
+      enum "exact" {
+        value 1;
+      }
+      enum "prefix" {
+        value 2;
+      }
+    }
+  }
+
+  typedef vacmAccessReadViewNameType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef vacmAccessWriteViewNameType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef vacmAccessNotifyViewNameType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef vacmViewTreeFamilyViewNameType {
+    type string {
+      length "1 .. 32";
+    }
+  }
+
+  typedef vacmViewTreeFamilyMaskType {
+    type tailf:hex-list {
+      tailf:value-length "0 .. 16";
+      pattern "(((([0-9A-Fa-f]{2}):){0,15}([0-9A-Fa-f]{2}))){0,1}";
+    }
+  }
+
+  typedef vacmViewTreeFamilyTypeType {
+    type enumeration {
+      enum "included" {
+        value 1;
+      }
+      enum "excluded" {
+        value 2;
+      }
+    }
+  }
+
+  container SNMP-VIEW-BASED-ACM-MIB {
+    container vacmSecurityToGroupTable {
+      list vacmSecurityToGroupEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.6.3.16.1.2";
+        key "vacmSecurityModel vacmSecurityName";
+        leaf vacmSecurityModel {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.2.1.1";
+          type vacmSecurityModelType;
+        }
+        leaf vacmSecurityName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.2.1.2";
+          type vacmSecurityNameType;
+        }
+        leaf vacmGroupName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.2.1.3";
+          type vacmGroupNameType;
+          mandatory true;
+        }
+        leaf vacmSecurityToGroupStorageType {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.2.1.4";
+          type SNMPv2_TC:StorageType;
+          default "nonVolatile";
+        }
+      }
+    }
+    container vacmAccessTable {
+      list vacmAccessEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.6.3.16.1.4";
+        key "vacmGroupName vacmAccessContextPrefix vacmAccessSecurityModel vacmAccessSecurityLevel";
+        leaf vacmGroupName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.2.1.3";
+          type vacmGroupNameType;
+        }
+        leaf vacmAccessContextPrefix {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.1";
+          type vacmAccessContextPrefixType;
+        }
+        leaf vacmAccessSecurityModel {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.2";
+          type SNMP_FRAMEWORK_MIB:SnmpSecurityModel;
+        }
+        leaf vacmAccessSecurityLevel {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.3";
+          type SNMP_FRAMEWORK_MIB:SnmpSecurityLevel;
+        }
+        leaf vacmAccessContextMatch {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.4";
+          type vacmAccessContextMatchType;
+          default "exact";
+        }
+        leaf vacmAccessReadViewName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.5";
+          type vacmAccessReadViewNameType;
+        }
+        leaf vacmAccessWriteViewName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.6";
+          type vacmAccessWriteViewNameType;
+        }
+        leaf vacmAccessNotifyViewName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.7";
+          type vacmAccessNotifyViewNameType;
+        }
+        leaf vacmAccessStorageType {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.4.1.8";
+          type SNMPv2_TC:StorageType;
+          default "nonVolatile";
+        }
+      }
+    }
+    container vacmViewTreeFamilyTable {
+      list vacmViewTreeFamilyEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.6.3.16.1.5.2";
+        key "vacmViewTreeFamilyViewName vacmViewTreeFamilySubtree";
+        leaf vacmViewTreeFamilyViewName {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.5.2.1.1";
+          type vacmViewTreeFamilyViewNameType;
+        }
+        leaf vacmViewTreeFamilySubtree {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.5.2.1.2";
+          type yang:object-identifier;
+        }
+        leaf vacmViewTreeFamilyMask {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.5.2.1.3";
+          type vacmViewTreeFamilyMaskType;
+        }
+        leaf vacmViewTreeFamilyType {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.5.2.1.4";
+          type vacmViewTreeFamilyTypeType;
+          default "included";
+        }
+        leaf vacmViewTreeFamilyStorageType {
+          tailf:snmp-oid "1.3.6.1.6.3.16.1.5.2.1.5";
+          type SNMPv2_TC:StorageType;
+          default "nonVolatile";
+        }
+      }
+    }
+  }
+}

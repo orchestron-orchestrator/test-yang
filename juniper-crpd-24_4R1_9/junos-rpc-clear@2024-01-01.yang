@@ -1,0 +1,3004 @@
+
+/*
+ * Copyright (c) 2025 Juniper Networks, Inc.
+ * All rights reserved.
+ */
+ module junos-rpc-clear {
+   namespace "http://yang.juniper.net/junos/rpc/clear";
+
+   prefix clear;
+
+   import junos-common-types {
+     prefix jt;
+     revision-date 2024-01-01;
+   }
+
+   organization "Juniper Networks, Inc.";
+
+   contact "yang-support@juniper.net";
+
+   description "Junos RPC YANG module for clear command(s)";
+
+   revision 2024-01-01 {
+     description "Junos: 20241218.202301_builder.r1463698";
+   }
+
+   rpc clear-system-commit {
+     description "Clear all pending commit requests";
+     input {
+       leaf prepared {
+         description "Clear prepared commit";
+         type empty;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-system-login-lockout {
+     description "Clear login locks on user accounts";
+     input {
+       choice lockout-choice {
+         case all {
+           leaf all {
+             description "Clear login locks on all user acounts";
+             type empty;
+           }
+         }
+         case user {
+           leaf user {
+             description "Name of user";
+             type string;
+           }
+         }
+       }
+     }
+     output {
+       container clear-system-login-lockout {
+         uses clear-system-login-lockout-block;
+       }
+     }
+   }
+   rpc clear-trace {
+     description "Clear traces for applications and nodes";
+     input {
+       leaf all-traces {
+         description "Remove all traces";
+         type empty;
+       }
+       leaf node {
+         description "Remove traces for this node";
+         type string;
+       }
+       leaf application {
+         description "Remove traces for this application";
+         type string;
+       }
+       leaf pid {
+         description "Remove traces for this pid";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-log {
+     description "Clear contents of log file";
+     input {
+       leaf filename {
+         description "Name of log file";
+         type string {
+         }
+         mandatory true;
+       }
+       leaf all {
+         description "Also delete all archive (.gz) files for specified file";
+         type empty;
+       }
+       leaf tenant {
+         description "Name of tenant";
+         type string {
+         }
+       }
+       leaf logical-system {
+         description "Name of logical system";
+         type string {
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-log-sset {
+     description "Name of service-set";
+     input {
+       leaf filename {
+         description "Name of log file";
+         type string {
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-log-pics {
+     description "Name of interface";
+     input {
+       leaf filename {
+         description "Name of log file";
+         type string {
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-bfd-session-information {
+     description "Clear BFD sessions";
+     input {
+       leaf all {
+         description "Cleae all BFD sessions";
+         type empty;
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-session-discriminator {
+     description "Clear a BFD session by discriminator";
+     input {
+       leaf discriminator-number {
+         description "Local discriminator of session to clear";
+         type union {
+           type uint32;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-session-address {
+     description "Clear a BFD session by address";
+     input {
+       leaf session-address {
+         description "Address of session to clear";
+         type jt:ipaddr;
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-adaptation-information {
+     description "Clear BFD adaptation";
+     input {
+       leaf all {
+         description "Clear BFD adaptation for all sessions";
+         type empty;
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-adaptation-discriminator {
+     description "Clear BFD adaptation by discriminator";
+     input {
+       leaf discriminator-number {
+         description "Local discriminator of session to clear";
+         type union {
+           type uint32;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-adaptation-address {
+     description "Clear BFD adaptation by address";
+     input {
+       leaf session-address {
+         description "Address of session to clear";
+         type jt:ipaddr;
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-damping-information {
+     description "Clear BFD damping";
+     input {
+       leaf all {
+         description "Clear BFD damping for all sessions";
+         type empty;
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-damping-discriminator {
+     description "Clear BFD damping by discriminator";
+     input {
+       leaf discriminator-number {
+         description "Local discriminator of session to clear";
+         type union {
+           type uint32;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-bfd-damping-address {
+     description "Clear BFD damping by address";
+     input {
+       leaf session-address {
+         description "Address of session to clear";
+         type jt:ipaddr;
+         mandatory true;
+       }
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       container bfd-session-information {
+         uses bfd-session-information-block;
+       }
+     }
+   }
+   rpc clear-twamp-information {
+     description "Clear TWAMP information";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-twamp-server-information {
+     description "Clear TWAMP server information";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-twamp-server-connection-information {
+     description "Clear TWAMP server connection information";
+     input {
+       leaf connection-id {
+         description "Connection ID";
+         default "all";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-bgp-damping {
+     description "Clear damping information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf prefix {
+         description "Destination prefix and prefix length";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-bgp-neighbor {
+     description "Clear BGP neighbors";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf rib-sharding {
+         description "Name of rib shard";
+         type string {
+         }
+       }
+       leaf disposition {
+         type enumeration {
+           enum "soft" {
+             description "Soft reset outbound state";
+           }
+           enum "soft-minimum-igp" {
+             description "Soft reset outbound state with refresh of minimum igp MED";
+           }
+           enum "soft-minimum-effective-aigp" {
+             description "Soft reset outbound state with refresh of minimum effective aigp MED";
+           }
+           enum "soft-inbound" {
+             description "Soft reset inbound state by issuing Refresh";
+           }
+           enum "soft-reconfig" {
+             description "Soft reset inbound state by import re-evaluation";
+           }
+           enum "malformed-route" {
+             description "Clear malformed routes";
+           }
+           enum "stale-routes" {
+             description "Clear stale routes";
+           }
+           enum "gracefully" {
+             description "Allow peer to start graceful restart receiving-speaker mode, if possible";
+           }
+         }
+       }
+       leaf instance {
+         description "Name of BGP instance";
+         type string;
+       }
+       leaf as {
+         description " Autonomous system number in plain number or 'higher 16bits'.'Lower 16 bits' (asdot notation) format";
+         type string {
+         }
+       }
+       choice neighbor-choice {
+         case neighbor {
+           leaf neighbor {
+             description "Particular BGP neighbor to clear";
+             type string;
+           }
+         }
+         case all {
+           leaf all {
+             description "Clear All BGP neighbors";
+             type empty;
+           }
+         }
+         case allowed-neighbors {
+           leaf allowed-neighbors {
+             description "Clear all neighbors brought up via allow";
+             type empty;
+           }
+         }
+         case dynamic-neighbor-template {
+           leaf dynamic-neighbor-template {
+             description "Clear all neighbors brought up via dynamic-neighbor allow";
+             type string;
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-bgp-table {
+     description "Refresh routes in a routing table";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf table {
+         description "Name of table to clear";
+         type string;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-evpn-duplicate-mac-suppression {
+     description "Clear duplicate MAC suppression";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Clear duplicate MAC suppression for a specific instance";
+         type string;
+       }
+       leaf l2-domain-id {
+         description "Clear duplicate MAC suppression for a specific L2 domain";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type int32 {
+             range "1 .. 16777214";
+           }
+         }
+       }
+       leaf mac-address {
+         description "Clear duplicate MAC suppression for a specific MAC address";
+         type jt:mac-addr;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ipv6-router-advertisement-information {
+     description "Clear IPv6 router advertisement information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf interface {
+         description "Name of interface";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-dynamic-tunnels-database-statistics {
+     description "Clear dynamic-tunnels statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf destination {
+         description "IP or IP-color<c> address with optional prefix length of destination";
+         type string;
+       }
+       leaf next-hop {
+         description "Clear only tunnel nexthop traffic statistics of the tunnels";
+         type empty;
+       }
+       leaf tunnel-type {
+         description "Clear traffic statistics of all the tunnels with given tunnel type";
+         type enumeration {
+           enum "ipoip" {
+             description "IPIP tunnel type";
+           }
+           enum "gre" {
+             description "GRE tunnel type";
+           }
+           enum "udp" {
+             description "UDP tunnel type";
+           }
+           enum "ipv6" {
+             description "IPv6 tunnel type";
+           }
+           enum "grev6" {
+             description "GRE v6 tunnel type";
+           }
+           enum "udpv6" {
+             description "UDP v6 tunnel type";
+           }
+         }
+       }
+       leaf tunnel-id {
+         description "Clear traffic statistics of all the tunnels with given tunnel-id";
+         type union {
+           type uint32;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+       }
+       leaf table {
+         description "Clear traffic statistics of all tunnels belonging to this routing table";
+         type string;
+       }
+       leaf chain-type {
+         description "Clear traffic statistics of all tunnels with given next-hop type";
+         type enumeration {
+           enum "v4" {
+             description "V4 next-hops";
+           }
+           enum "v6" {
+             description "V6 next-hops";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-adjacency-information {
+     description "Clear IS-IS adjacencies";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of IS-IS instance";
+         type string;
+       }
+       leaf interface {
+         description "Name of interface";
+         type string;
+       }
+       choice clear-adj-arg {
+         case all {
+           leaf all {
+             description "Clear all IS-IS adjacencies";
+             type empty;
+           }
+         }
+         case neighbor {
+           leaf neighbor {
+             description "Name of neighbor";
+             type string;
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-database-information {
+     description "Clear IS-IS database entries";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of IS-IS instance";
+         type string;
+       }
+       choice clear-db-arg {
+         case all {
+           leaf all {
+             description "Clear all IS-IS database entries";
+             type empty;
+           }
+         }
+         case entries {
+           leaf entries {
+             description "Name of database entry";
+             type string;
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-layer2-map-information {
+     description "Clear IS-IS ARP/ND mapping information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of IS-IS instance";
+         type string;
+       }
+       leaf destination {
+         description "IP address of mapping entry";
+         type jt:ipaddr;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-overload-information {
+     description "Clear overload bit and regenerate LSPs";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of IS-IS instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-statistics-information {
+     description "Clear IS-IS statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of IS-IS instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-interface-statistics-information {
+     description "Clear ISIS interface statistics information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of IS-IS instance";
+         type string;
+       }
+       leaf interface-name {
+         description "Name of interface";
+         type string;
+       }
+       leaf all {
+         description "Clear all interface statistics";
+         type empty;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-spring-information {
+     description "Clear SPRING information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-isis-spring-flex-algorithm-information {
+     description "Clear SPRING flex-algorithm information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf flex-algorithm-id {
+         description "Flex Algorithm id";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "128 .. 255";
+           }
+         }
+       }
+       leaf level {
+         description "Number of IS-IS level";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "1 .. 2";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-l2ckt-pw-auto-sensing {
+     description "Clear Layer 2 circuit PW auto-sensing state";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf neighbor {
+         description "IP address of neighbor";
+         default "all";
+         type string;
+       }
+       leaf vc-id {
+         description "VC ID";
+         default "all";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-vpls-mac-address {
+     description "Clear a VPLS media access control address";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "VPLS instance name";
+         default "all";
+         type string;
+       }
+       leaf address {
+         description "MAC address to clear";
+         default "all";
+         type jt:mac-addr;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-vpls-statistics {
+     description "Clear a VPLS statistics information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "VPLS instance name";
+         type string;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ldp-neighbors {
+     description "Clear LDP neighbors";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of LDP routing instance";
+         type string;
+       }
+       choice clear_arg {
+         case all {
+           leaf all {
+             description "Clear all neighbors";
+             type empty;
+           }
+         }
+         case neighbor {
+           leaf neighbor {
+             description "IP address of the neighbor";
+             type jt:ipaddr;
+           }
+         }
+         case ldp-family {
+           leaf ldp-family {
+             type enumeration {
+               enum "inet" {
+                 description "Clear IPv4 neighbors";
+               }
+               enum "inet6" {
+                 description "Clear IPv6 neighbors";
+               }
+             }
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ldp-sessions {
+     description "Clear LDP sessions";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of LDP routing instance";
+         type string;
+       }
+       choice clear_arg {
+         case all {
+           leaf all {
+             description "Clear all sessions";
+             type empty;
+           }
+         }
+         case destination {
+           leaf destination {
+             description "IP address of session destination";
+             type jt:ipaddr;
+           }
+         }
+         case ldp-family {
+           leaf ldp-family {
+             type enumeration {
+               enum "inet" {
+                 description "Clear IPv4 sessions";
+               }
+               enum "inet6" {
+                 description "Clear IPv6 sessions";
+               }
+             }
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ldp-statistics {
+     description "Clear LDP statistics counters";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of LDP routing instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ldp-interface-hello-statistics {
+     description "Clear LDP interface hello statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of LDP routing instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-mpls-lsp-information {
+     description "Reset nontransit or egress LSPs originating on this router";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+       leaf opt {
+         type enumeration {
+           enum "optimize" {
+             description "Perform nonpreemptive optimization computation now";
+           }
+           enum "optimize-aggressive" {
+             description "Perform aggressive optimization computation now";
+           }
+         }
+       }
+       leaf stats {
+         type enumeration {
+           enum "statistics" {
+             description "Clear LSP statistics";
+           }
+           enum "reverse-statistics" {
+             description "Clear LSP reverse-statistics for bidirectional LSPs";
+           }
+           enum "counters" {
+             description "Clear LSP Flap/MBB counters";
+           }
+         }
+       }
+       leaf autobw {
+         type enumeration {
+           enum "autobandwidth" {
+             description "Clear LSP autobandwidth counters";
+           }
+         }
+       }
+       choice clear-arg {
+         case name {
+           leaf regex {
+             description "Regular expression for LSP names to match";
+             type string;
+           }
+         }
+         case all {
+           leaf all {
+             description "Reset 'all' the ingress LSPs originating on this router";
+             type empty;
+           }
+         }
+       }
+       leaf path {
+         description "Regular expression for LSP path to match";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-mpls-container-lsp-information {
+     description "Reset nontransit or egress container LSP originating on this router";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+       leaf opt {
+         type enumeration {
+           enum "optimize" {
+             description "Perform nonpreemptive optimization computation now";
+           }
+           enum "optimize-aggressive" {
+             description "Perform aggressive optimization computation now";
+           }
+         }
+       }
+       leaf stats {
+         type enumeration {
+           enum "statistics" {
+             description "Clear LSP statistics";
+           }
+         }
+       }
+       leaf autobw {
+         type enumeration {
+           enum "autobandwidth" {
+             description "Clear LSP autobandwidth counters";
+           }
+         }
+       }
+       choice clear-arg {
+         case name {
+           leaf regex {
+             description "Name of Container LSP";
+             type string;
+           }
+         }
+         case all {
+           leaf all {
+             description "Reset 'all' the nontransit or egress Container LSPs originating on this router";
+             type empty;
+           }
+         }
+       }
+       leaf history {
+         type enumeration {
+           enum "history" {
+             description "Clear container LSP samples from the history";
+           }
+         }
+       }
+       leaf member {
+         description "Regular expression for member LSP names to match";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-mpls-label-information {
+     description "MPLS label";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf history {
+         type enumeration {
+           enum "history" {
+             description "Clear label history";
+           }
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-mpls-tunnel-manager-statistics-information {
+     description "MPLS tunnel manager statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-mpls-static-lsp-information {
+     description "Reset static LSP statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+       leaf stats {
+         type enumeration {
+           enum "statistics" {
+             description "Clear LSP statistics";
+           }
+         }
+         mandatory true;
+       }
+       leaf regex {
+         description "Regular expression for LSP names to match";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-neighbor-information {
+     description "Clear OSPF neighbors";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf all {
+         description "Clear all Neighbor";
+         type empty;
+       }
+       leaf interface {
+         description "Name of logical interface";
+         type string;
+       }
+       leaf neighbor {
+         description "Name of neighbor";
+         type string;
+       }
+       leaf area {
+         description "OSPF area ID";
+         type jt:areaid;
+       }
+       leaf instance {
+         description "Name of OSPF instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-database-information {
+     description "Clear OSPF database entries";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf flex-algorithm-id {
+         description "Flex Algorithm id";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "128 .. 255";
+           }
+         }
+       }
+       leaf all {
+         description "Clear All Database";
+         type empty;
+       }
+       leaf area {
+         description "OSPF area ID";
+         default "all";
+         type string;
+       }
+       leaf instance {
+         description "Name of OSPF instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-database-protection {
+     description "Clear OSPF database protection related state";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of OSPF instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-statistics-information {
+     description "Clear OSPF statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of OSPF instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-intf-statistics-information {
+     description "Clear OSPF interface statistics information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of OSPF routing instance";
+         type string;
+       }
+       leaf interface-name {
+         description "Name of interface";
+         type string;
+       }
+       leaf all {
+         description "Clear all interface statistics";
+         type empty;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-io-statistics-information {
+     description "Clear OSPF I/O statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-overload-information {
+     description "Clear overload bit and rebuild LSAs";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf instance {
+         description "Name of OSPF instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-spring-information {
+     description "Clear SPRING information";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf-spring-flex-algorithm-information {
+     description "Clear SPRING flex-algorithm information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf igp-instance {
+         description "Name of igp-instance";
+         type string;
+       }
+       leaf flex-algorithm-id {
+         description "Flex Algorithm id";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "128 .. 255";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-neighbor-information {
+     description "Clear OSPFv3 neighbors";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf all {
+         description "Clear all Neighbor";
+         type empty;
+       }
+       leaf interface {
+         description "Name of logical interface";
+         type string;
+       }
+       leaf neighbor {
+         description "Name of OSPFv3 neighbor";
+         type string;
+       }
+       leaf area {
+         description "OSPF area ID";
+         type jt:areaid;
+       }
+       leaf instance {
+         description "Name of OSPFv3 instance";
+         type string;
+       }
+       leaf realm {
+         description "Name of realm";
+         type enumeration {
+           enum "ipv6-multicast" {
+             description "IPv6 multicast realm";
+           }
+           enum "ipv4-unicast" {
+             description "IPv4 unicast realm";
+           }
+           enum "ipv4-multicast" {
+             description "IPv4 multicast realm";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-database-information {
+     description "Clear OSPFv3 database entries";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf all {
+         description "Clear All Database";
+         type empty;
+       }
+       leaf area {
+         description "Area ID of OSPFv3 area";
+         default "all";
+         type string;
+       }
+       leaf instance {
+         description "Name of OSPFv3 instance";
+         type string;
+       }
+       leaf realm {
+         description "Name of realm";
+         type enumeration {
+           enum "ipv6-multicast" {
+             description "IPv6 multicast realm";
+           }
+           enum "ipv4-unicast" {
+             description "IPv4 unicast realm";
+           }
+           enum "ipv4-multicast" {
+             description "IPv4 multicast realm";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-database-protection-information {
+     description "Clear OSPFv3 database protection related state";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of OSPFv3 instance";
+         type string;
+       }
+       leaf realm {
+         description "Name of realm";
+         type enumeration {
+           enum "ipv6-multicast" {
+             description "IPv6 multicast realm";
+           }
+           enum "ipv4-unicast" {
+             description "IPv4 unicast realm";
+           }
+           enum "ipv4-multicast" {
+             description "IPv4 multicast realm";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-statistics-information {
+     description "Clear OSPFv3 statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of OSPFv3 instance";
+         type string;
+       }
+       leaf realm {
+         description "Name of realm";
+         type enumeration {
+           enum "ipv6-multicast" {
+             description "IPv6 multicast realm";
+           }
+           enum "ipv4-unicast" {
+             description "IPv4 unicast realm";
+           }
+           enum "ipv4-multicast" {
+             description "IPv4 multicast realm";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-intf-statistics-information {
+     description "Clear OSPFv3 interface statistics information";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of OSPFv3 routing instance";
+         type string;
+       }
+       leaf interface-name {
+         description "Name of interface";
+         type string;
+       }
+       leaf all {
+         description "Clear all interface statistics";
+         type empty;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-io-statistics-information {
+     description "Clear OSPFv3 I/O statistics";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-ospf3-overload-information {
+     description "Clear overload bit and rebuild LSAs";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of OSPFv3 instance";
+         type string;
+       }
+       leaf realm {
+         description "Name of realm";
+         type enumeration {
+           enum "ipv6-multicast" {
+             description "IPv6 multicast realm";
+           }
+           enum "ipv4-unicast" {
+             description "IPv4 unicast realm";
+           }
+           enum "ipv4-multicast" {
+             description "IPv4 multicast realm";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-validation-database {
+     description "Clear the route validation database";
+     input {
+       leaf instance {
+         description "Name of route validation instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-validation-session {
+     description "Clear route validation session";
+     input {
+       leaf destination {
+         description "IP address of session";
+         type jt:ipaddr;
+       }
+       leaf disposition {
+         type enumeration {
+           enum "soft-inbound" {
+             description "Soft reset inbound state by issuing Reset request";
+           }
+         }
+       }
+       leaf instance {
+         description "Name of route validation instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-validation-statistics {
+     description "Clear route validation statistics";
+     input {
+       leaf instance {
+         description "Name of route validation instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-lldp-neighbors {
+     description "Clear LLDP neighbor information";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-lldp-interface-neighbors {
+     description "Clear LLDP interface statistics";
+     input {
+       leaf interface-device {
+         description "Name of interface";
+         type union {
+           type jt:interface-device;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-lldp-statistics {
+     description "Clear LLDP statistics";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-lldp-interface-statistics {
+     description "Clear LLDP interface statistics";
+     input {
+       leaf interface-device {
+         description "Name of interface";
+         type union {
+           type jt:interface-device;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc clear-arp-table {
+     description "Clear address resolution information";
+     input {
+       leaf hostname {
+         description "Name of host";
+         type string;
+       }
+       leaf interface {
+         description "Name of the interface";
+         type string;
+       }
+       leaf vpn {
+         description "Name of VPN routing table";
+         type string;
+       }
+       leaf logical-system {
+         description "Name of logical system";
+         type string;
+       }
+     }
+   }
+   rpc clear-arp-table-all {
+     description "Clear All ARP entries";
+   }
+   grouping clear-system-login-lockout-block {
+     leaf no-login-lockout {
+       type empty;
+       description "No users locked out from logins";
+     }
+     leaf no-login-lockout-user {
+       type empty;
+       description "User not locked out from logins";
+     }
+   }
+   grouping bfd-session-information-block {
+     leaf sessions-shop {
+       type int32;
+       description "Total number of single-hop BFD sessions";
+     }
+     leaf sessions-shop-echolite {
+       type int32;
+       description "Total number of single-hop-echolite BFD sessions";
+     }
+     leaf sessions-shop-seamless {
+       type int32;
+       description "Total number of single-hop-seamless BFD sessions";
+     }
+     leaf sessions-mhop {
+       type int32;
+       description "Total number of multi-hop BFD sessions";
+     }
+     leaf sessions-mhop-seamless {
+       type int32;
+       description "Total number of multi-hop-seamless BFD sessions";
+     }
+     leaf sessions-micro {
+       type int32;
+       description "Total number of micro BFD sessions";
+     }
+     leaf sessions-mpls {
+       type int32;
+       description "Total number of mpls BFD sessions";
+     }
+     leaf sessions-vccv {
+       type int32;
+       description "Total number of vccv BFD sessions";
+     }
+     leaf sessions-admindown {
+       type int32;
+       description "Total number of Admin Down BFD sessions";
+     }
+     leaf sessions-down {
+       type int32;
+       description "Total number of Down state BFD sessions";
+     }
+     leaf sessions-init {
+       type int32;
+       description "Total number of Init state BFD sessions";
+     }
+     leaf sessions-up {
+       type int32;
+       description "Total number of Up state BFD sessions";
+     }
+     leaf sessions-failing {
+       type int32;
+       description "Total number of Failing BFD sessions";
+     }
+     leaf sessions {
+       type int32;
+       description "Total number of active BFD sessions";
+     }
+     leaf clients {
+       type int32;
+       description "Total number of clients that are hosting BFD sessions";
+     }
+     leaf up-sessions {
+       type string;
+       description "Total number of BFD sessions which are UP";
+     }
+     leaf down-sessions {
+       type string;
+       description "Total number of BFD sessions which are not UP";
+     }
+     leaf cumulative-transmission-rate {
+       type string;
+       description "Number of BFD control packets transmitted per second inall active sessions";
+     }
+     leaf cumulative-reception-rate {
+       type string;
+       description "Number of BFD control packets received per second inall active sessions";
+     }
+     leaf cumulative-up-time {
+       type string;
+       description "Time taken to being up bfd sesison";
+     }
+     list bfd-session {
+       leaf session-neighbor {
+         type string;
+         description "IP address of the neighbor for the BFD session";
+       }
+       leaf session-state {
+         type string;
+         description "BFD session state";
+       }
+       leaf session-interface {
+         type string;
+         description "Name of the interface on which the BFD session is active";
+       }
+       leaf session-detection-time {
+         type string;
+         description "Time period within which the host must receive BFD controlpackets to continue considering the session active (seconds)";
+       }
+       leaf session-transmission-interval {
+         type string;
+         description "Frequency at which the host system sends BFD controlpackets (seconds)";
+       }
+       leaf session-adaptive-multiplier {
+         type int32;
+         description "The adjusted value of detect multiplier.";
+       }
+       leaf session-up-time {
+         type string;
+         description "Time since the current session began (hours:minutes:seconds)";
+       }
+       leaf previous-down-time {
+         type string;
+         description "Amount of time the previous session was down(hours:minutes:seconds)";
+       }
+       leaf session-down-time {
+         type string;
+         description "Time for which the current session was down(hours:minutes:seconds)";
+       }
+       leaf previous-up-time {
+         type string;
+         description "Duration of the previous session (hours:minutes:seconds)";
+       }
+       leaf local-diagnostic {
+         type string;
+         description "Information provided by the local host about BFD sessionsthat have failed (for example if the node is administrativelydown or a control timer has expired)";
+       }
+       leaf remote-diagnostic {
+         type string;
+         description "Information provided by the remote host about BFD sessionsthat have failed (for example if the node is administrativelydown or a control timer has expired)";
+       }
+       leaf v0-remote-state {
+         type string;
+         description "(BFD version 0 only.) Indicates whether the local system is receiving BFD control packets from the remote system.";
+       }
+       leaf remote-listen {
+         type string;
+         description "(BFD version 0 only.) Indicates whether the remote system isreceiving control packets transmitted by the local system.";
+       }
+       leaf remote-state {
+         type string;
+         description "(BFD version 1 only.) Indicates the remote session state";
+       }
+       leaf session-version {
+         type int32;
+         description "Version of the BFD protocol being used for the session";
+       }
+       leaf logical-system-id {
+         type int32;
+         description "Logical system on which the session is established";
+       }
+       leaf route-table-index {
+         type int32;
+         description "Routing table index for the current logical system";
+       }
+       leaf replicated {
+         type string;
+         description "Indicates whether the session is replicated between master andstandby RE";
+       }
+       leaf session-type {
+         type string;
+         description "Indicates the flavor of the BFD session";
+       }
+       leaf minimum-asynchronous-interval {
+         type string;
+         description "Minimum amount of time that the local system proposes forthe delay between transmission of asynchronous control packetsacross the BFD session (seconds)";
+       }
+       leaf minimum-slow-interval {
+         type string;
+         description "Either one second or the minimum asynchronous interval,whichever is greater";
+       }
+       leaf adaptive-asynchronous-transmission-interval {
+         type string;
+         description "Minimum asynchronous interval used when there is routeflapping";
+       }
+       leaf adaptive-reception-interval {
+         type string;
+         description "Adjusted value of minimum reception interval.";
+       }
+       leaf minimum-transmission-interval {
+         type string;
+         description "Minimum amount of time that the local system proposes forthe delay between transmission of control packets across theBFD session (seconds). It is either the minimum slow interval orthe adaptive asynchronous transmission interval";
+       }
+       leaf minimum-reception-interval {
+         type string;
+         description "Minimum amount of time that the local system waits betweenchecks for newly received control packets (seconds)";
+       }
+       leaf detection-multiplier {
+         type int32;
+         description "Desired detect time multiplier for BFD control packets.It is multiplied by the negotiated control packet receptioninterval to determine the session detection time (time todetect whether the session is alive).";
+       }
+       leaf neighbor-minimum-transmission-interval {
+         type string;
+         description "Minimum amount of time that the remote system proposes forthe delay between transmission of control packets across the BFDsession (seconds)";
+       }
+       leaf neighbor-minimum-reception-interval {
+         type string;
+         description "Minimum amount of time that the remote system waits betweenchecks for newly received control packets (seconds)";
+       }
+       leaf neighbor-session-multiplier {
+         type int32;
+         description "Neighbor's detection multiplier";
+       }
+       leaf issu-state {
+         type string;
+         description "ISSU state of the session";
+       }
+       leaf original-transmission-interval {
+         type int32;
+         description "Original pre-ISSU transmission interval";
+       }
+       leaf original-reception-interval {
+         type int32;
+         description "Original pre-ISSU reception interval";
+       }
+       leaf local-discriminator {
+         type int32;
+         description "Authentication code used by the local system to identify theBFD session";
+       }
+       leaf remote-discriminator {
+         type uint32;
+         description "Authentication code used by the remote system to identify theBFD session";
+       }
+       leaf echo-tx-interval {
+         type string;
+         description "Echo tx interval";
+       }
+       leaf echo-detection-interval {
+         type string;
+         description "Echo detection interval";
+       }
+       leaf threshold-transmission-interval {
+         type string;
+         description "The maximum duration (in seconds) for the transmissioninterval before an SNMP trap is generated";
+       }
+       leaf threshold-detection-time {
+         type int32;
+         description "The maximum duration (in seconds) for the detection timebefore an SNMP trap is generated";
+       }
+       leaf authentication {
+         type string;
+         description "Authentication status";
+       }
+       leaf session-keychain {
+         type string;
+         description "Authentication status";
+       }
+       leaf session-algorithm {
+         type int32;
+         description "Session authentication algorithm";
+       }
+       leaf session-authentication-loose {
+         type int32;
+         description "Session authentication mode";
+       }
+       leaf neighbor-fate {
+         type string;
+         description "Indicates whether the remote system is control-planeindependent";
+       }
+       leaf adaptation-disabled {
+         type string;
+         description "Indicates whether adaptation has been disabled";
+       }
+       leaf holddown-timer {
+         type string;
+         description "Status of version negotiation";
+       }
+       leaf l2ckt-neighbor-address {
+         type string;
+         description "L2circuit neighbor address";
+       }
+       leaf l2ckt-vc-id {
+         type int32;
+         description "L2circuit virtual circuit id";
+       }
+       leaf l2vpn-local-site-id {
+         type int32;
+         description "Local site id of the L2vpn";
+       }
+       leaf l2vpn-remote-site-id {
+         type int32;
+         description "Remote site id of the L2vpn";
+       }
+       leaf l2vpn-fec129-agi {
+         type string;
+         description "AGI of the L2vpn";
+       }
+       leaf l2vpn-fec129-saii {
+         type string;
+         description "SAII of the L2vpn";
+       }
+       leaf l2vpn-fec129-taii {
+         type string;
+         description "TAII of the L2vpn";
+       }
+       leaf tunnel-name {
+         type string;
+         description "Name of the BFD tunnel";
+       }
+       leaf tunnel-path {
+         type string;
+         description "Path of the BFD tunnel";
+       }
+       leaf tunnel-prefix {
+         type string;
+         description "Prefix for the Label Distribution Protocol tunnel";
+       }
+       leaf tunnel-prefix-length {
+         type int32;
+         description "Length of prefix for the Label Distribution Protocol tunnel";
+       }
+       leaf tunnel-type {
+         type string;
+         description "Type of tunnel";
+       }
+       leaf tunnel-destination {
+         type string;
+         description "Destination for the Label Distribution Protocol tunnel";
+       }
+       leaf multihop {
+         type string;
+         description "Multihop session";
+       }
+       leaf multihop-time-to-live {
+         type int32;
+         description "Time-to-live for multihop session";
+       }
+       leaf multihop-routing-table-index {
+         type int32;
+         description "Multihop session index in the routing table ";
+       }
+       leaf multihop-local-address {
+         type string;
+         description "Multihop local address";
+       }
+       leaf echo-mode-desired {
+         type string;
+         description "Indicates whether the local system proposes that echotransmissions be enabled for the BFD session";
+       }
+       leaf echo-mode-state {
+         type string;
+         description "Indicates whether echo transmissions are enabled for theBFD session";
+       }
+       leaf no-async {
+         type string;
+         description "No async enabled for this bfd session";
+       }
+       leaf no-absorb {
+         type string;
+         description "Incoming packets are not absorbed";
+       }
+       leaf no-refresh {
+         type string;
+         description "The adjacency is not refreshed";
+       }
+       leaf update-adjacency {
+         type string;
+         description "Indicates whether the adjacency needs to be updated";
+       }
+       leaf update-transmit {
+         type string;
+         description "Indicates whether a transmission needs to be updated";
+       }
+       leaf bfd-pdu-size {
+         type uint32;
+         description "Bfd pdu size incase of large pkt support";
+       }
+       leaf inline-disable {
+         type string;
+         description "Inline Disabled status";
+       }
+       leaf session-id {
+         type uint32;
+         description "Session repair ID";
+       }
+       leaf trace-session-id-state {
+         type string;
+         description "Session repair ID State";
+       }
+       leaf trace-session-type {
+         type string;
+         description "Trace session type";
+       }
+       leaf trace-rtbl-index {
+         type int32;
+         description "Route table Index";
+       }
+       leaf trace-ifl-index {
+         type int32;
+         description "Interface index";
+       }
+       leaf trace-src-addr {
+         type string;
+         description "Source address";
+       }
+       leaf trace-dest-addr {
+         type string;
+         description "Destination address";
+       }
+       leaf trace-tunnel-label {
+         type int32;
+         description "Tunnel label for PW";
+       }
+       leaf trace-bundle-ifd {
+         type int32;
+         description "Bundle ifd";
+       }
+       leaf trace-bundle-af {
+         type int32;
+         description "Bundle family";
+       }
+       leaf trace-session-enabled {
+         type string;
+         description "Session tracing status";
+       }
+       list bfd-client {
+         leaf client-name {
+           type string;
+           description "Protocol for which the BFD session is active (forexample: OSPF, ISIS, Static, and so on) ";
+         }
+         leaf client-transmission-interval {
+           type string;
+           description "Base frequency that the client proposes for sending BFDcontrol packets (seconds)";
+         }
+         leaf client-reception-interval {
+           type string;
+           description "Base frequency that the client has proposed for peersto send BFD control packets (seconds)";
+         }
+         leaf client-echo-transmission-interval {
+           type string;
+           description "Base frequency that the client proposes for sending BFD Echocontrol packets (seconds)";
+         }
+         leaf client-multiplier {
+           type int32;
+           description "Multiplier that the client has requested to determine theliveness of the BFD session.";
+         }
+         leaf client-authentication {
+           type string;
+           description "Client requested authentication";
+         }
+         leaf client-holddown-interval {
+           type string;
+           description "Hold interval for which BFD does not send a session UP notification to the client (seconds)";
+         }
+         leaf client-state {
+           type string;
+           description "Tells whether client is in holddown or not";
+         }
+         leaf client-keychain {
+           type string;
+           description "Client requested keychain name";
+         }
+         leaf client-algorithm {
+           type int32;
+           description "Client requested algorithm";
+         }
+         leaf client-authentication-loose {
+           type string;
+           description "Client requested mode";
+         }
+         leaf client-damp-suppress {
+           type uint32;
+           description "Suppress Threshold";
+         }
+         leaf client-damp-reuse {
+           type uint32;
+           description "Reuse Threshold";
+         }
+         leaf client-damp-halflife {
+           type uint32;
+           description "Decay Halflife interval in seconds";
+         }
+         leaf client-damp-increment {
+           type uint32;
+           description "Merit increments for every fault event";
+         }
+         leaf client-damp-maxsuppress {
+           type uint32;
+           description "Maximum suppress time limit in seconds";
+         }
+         leaf client-damp-maxmerit {
+           type uint32;
+           description "Maximum limit for merit value";
+         }
+         leaf client-damp-state {
+           type string;
+           description "Dampening state";
+         }
+         leaf client-damp-time {
+           type string;
+           description "Last damp or reuse event time";
+         }
+         leaf client-damp-next-reuse-time {
+           type string;
+           description "Expected reuse time";
+         }
+         leaf client-damp-merit {
+           type uint32;
+           description "Current value of merit";
+         }
+         leaf client-damp-session-state {
+           type string;
+           description "Last notified session state";
+         }
+         leaf client-damp-notif-time {
+           type string;
+           description "Last state notified time";
+         }
+         leaf client-damp-increment-time {
+           type string;
+           description "Last merit increment time";
+         }
+         leaf client-damp-decay-time {
+           type string;
+           description "Last merit detay time";
+         }
+       }
+     }
+     leaf error-value {
+       type string;
+       description "Error code that is returned when a 'clear' operation fails";
+     }
+   }
+ }

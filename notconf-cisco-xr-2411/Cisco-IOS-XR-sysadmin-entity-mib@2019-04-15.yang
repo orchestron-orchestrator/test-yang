@@ -1,0 +1,354 @@
+module Cisco-IOS-XR-sysadmin-entity-mib {
+  namespace "http://www.cisco.com/ns/yang/Cisco-IOS-XR-sysadmin-entity-mib";
+  prefix ENTITY_MIB;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import SNMPv2-TC {
+    prefix SNMPv2-TC;
+  }
+  import SNMP-FRAMEWORK-MIB {
+    prefix SNMP-FRAMEWORK-MIB;
+  }
+  import cisco-semver {
+    prefix semver;
+  }
+
+  organization
+    "Cisco Systems Inc.";
+  contact
+    "Cisco Systems, Inc.
+     Customer Service
+
+     Postal: 170 West Tasman Drive
+     San Jose, CA 95134
+
+     Tel: +1 800 553-NETS
+
+     E-mail: cs-yang@cisco.com";
+  description
+    "This module contains a collection of YANG
+     definitions for Cisco IOS-XR SysAdmin configuration.
+
+     Copyright (c) 2015-2020 by Cisco Systems, Inc.
+     All rights reserved.";
+
+  revision 2019-04-15 {
+    semver:module-version "1.0.0";
+    description
+      "Establish semantic version baseline.";
+  }
+  revision 2017-04-12 {
+    description
+      "Changed namespace and module name";
+  }
+  revision 1999-12-07 {
+    description
+      "";
+  }
+
+  tailf:id "http://tail-f.com/ns/mibs/ENTITY-MIB/199912070000Z";
+  tailf:snmp-mib-module-name "ENTITY-MIB";
+
+  typedef PhysicalIndex {
+    type int32 {
+      range "1 .. 2147483647";
+    }
+  }
+
+  typedef PhysicalClass {
+    type enumeration {
+      enum "other" {
+        value 1;
+      }
+      enum "unknown" {
+        value 2;
+      }
+      enum "chassis" {
+        value 3;
+      }
+      enum "backplane" {
+        value 4;
+      }
+      enum "container" {
+        value 5;
+      }
+      enum "powerSupply" {
+        value 6;
+      }
+      enum "fan" {
+        value 7;
+      }
+      enum "sensor" {
+        value 8;
+      }
+      enum "module" {
+        value 9;
+      }
+      enum "port" {
+        value 10;
+      }
+      enum "stack" {
+        value 11;
+      }
+    }
+  }
+
+  typedef SnmpEngineIdOrNone {
+    type tailf:hex-list;
+  }
+
+  typedef entPhysicalContainedInType {
+    type int32 {
+      range "0 .. 2147483647";
+    }
+  }
+
+  typedef entPhysicalParentRelPosType {
+    type int32 {
+      range "-1 .. 2147483647";
+    }
+  }
+
+  typedef entPhysicalSerialNumType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef entPhysicalAliasType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef entPhysicalAssetIDType {
+    type string {
+      length "min .. 32";
+    }
+  }
+
+  typedef entLogicalIndexType {
+    type int32 {
+      range "1 .. 2147483647";
+    }
+  }
+
+  typedef entLogicalCommunityType {
+    type tailf:hex-list;
+  }
+
+  typedef entAliasLogicalIndexOrZeroType {
+    type int32 {
+      range "0 .. 2147483647";
+    }
+  }
+
+  container ENTITY-MIB {
+    container entityGeneral {
+      tailf:snmp-oid "1.3.6.1.2.1.47.1.4";
+      config false;
+      leaf entLastChangeTime {
+        tailf:snmp-oid "1.3.6.1.2.1.47.1.4.1";
+        type yang:timestamp;
+        config false;
+      }
+    }
+    container entPhysicalTable {
+      config false;
+      list entPhysicalEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1";
+        key "entPhysicalIndex";
+        config false;
+        leaf entPhysicalIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.1";
+          type PhysicalIndex;
+        }
+        leaf entPhysicalDescr {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.2";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalVendorType {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.3";
+          type SNMPv2-TC:AutonomousType;
+          config false;
+        }
+        leaf entPhysicalContainedIn {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.4";
+          type entPhysicalContainedInType;
+          config false;
+        }
+        leaf entPhysicalClass {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.5";
+          type PhysicalClass;
+          config false;
+        }
+        leaf entPhysicalParentRelPos {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.6";
+          type entPhysicalParentRelPosType;
+          config false;
+        }
+        leaf entPhysicalName {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.7";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalHardwareRev {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.8";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalFirmwareRev {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.9";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalSoftwareRev {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.10";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalSerialNum {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.11";
+          type entPhysicalSerialNumType;
+          config false;
+        }
+        leaf entPhysicalMfgName {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.12";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalModelName {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.13";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entPhysicalAlias {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.14";
+          type entPhysicalAliasType;
+          config false;
+        }
+        leaf entPhysicalAssetID {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.15";
+          type entPhysicalAssetIDType;
+          config false;
+        }
+        leaf entPhysicalIsFRU {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.16";
+          type SNMPv2-TC:TruthValue;
+          config false;
+        }
+      }
+    }
+    container entLogicalTable {
+      config false;
+      list entLogicalEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1";
+        key "entLogicalIndex";
+        config false;
+        leaf entLogicalIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.1";
+          type entLogicalIndexType;
+        }
+        leaf entLogicalDescr {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.2";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+        leaf entLogicalType {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.3";
+          type SNMPv2-TC:AutonomousType;
+          config false;
+        }
+        leaf entLogicalCommunity {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.4";
+          type entLogicalCommunityType;
+          config false;
+        }
+        leaf entLogicalTAddress {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.5";
+          type SNMPv2-TC:TAddress;
+          config false;
+        }
+        leaf entLogicalTDomain {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.6";
+          type SNMPv2-TC:TDomain;
+          config false;
+        }
+        leaf entLogicalContextEngineID {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.7";
+          type SnmpEngineIdOrNone;
+          config false;
+        }
+        leaf entLogicalContextName {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.8";
+          type SNMP-FRAMEWORK-MIB:SnmpAdminString;
+          config false;
+        }
+      }
+    }
+    container entLPMappingTable {
+      config false;
+      list entLPMappingEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.2.1.47.1.3.1";
+        key "entLogicalIndex entLPPhysicalIndex";
+        config false;
+        leaf entLogicalIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.2.1.1.1";
+          type entLogicalIndexType;
+        }
+        leaf entLPPhysicalIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.3.1.1.1";
+          type PhysicalIndex;
+        }
+      }
+    }
+    container entAliasMappingTable {
+      config false;
+      list entAliasMappingEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.2.1.47.1.3.2";
+        key "entPhysicalIndex entAliasLogicalIndexOrZero";
+        config false;
+        leaf entPhysicalIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.1";
+          type PhysicalIndex;
+        }
+        leaf entAliasLogicalIndexOrZero {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.3.2.1.1";
+          type entAliasLogicalIndexOrZeroType;
+        }
+        leaf entAliasMappingIdentifier {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.3.2.1.2";
+          type SNMPv2-TC:RowPointer;
+          config false;
+        }
+      }
+    }
+    container entPhysicalContainsTable {
+      config false;
+      list entPhysicalContainsEntry {
+        tailf:sort-order "snmp";
+        tailf:snmp-oid "1.3.6.1.2.1.47.1.3.3";
+        key "entPhysicalIndex entPhysicalChildIndex";
+        config false;
+        leaf entPhysicalIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.1.1.1.1";
+          type PhysicalIndex;
+        }
+        leaf entPhysicalChildIndex {
+          tailf:snmp-oid "1.3.6.1.2.1.47.1.3.3.1.1";
+          type PhysicalIndex;
+        }
+      }
+    }
+  }
+}

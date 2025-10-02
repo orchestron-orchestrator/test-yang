@@ -1,0 +1,156 @@
+module Cisco-IOS-XR-mpls-te-act {
+  namespace "http://cisco.com/ns/yang/Cisco-IOS-XR-mpls-te-act";
+  prefix mpls-te-act;
+
+  import cisco-semver {
+    prefix semver;
+  }
+  import Cisco-IOS-XR-types {
+    prefix csc;
+  }
+
+  organization
+    "Cisco Systems, Inc.";
+  contact
+    "Cisco Systems, Inc.
+     Customer Service
+
+     Postal: 170 West Tasman Drive
+     San Jose, CA 95134
+
+     Tel: +1 800 553-NETS
+
+     E-mail: cs-yang@cisco.com";
+  description
+    "This module contains a collection of YANG definitions
+     for Cisco IOS-XR mpls traffic-eng action commands.
+
+     Copyright (c) 2023 by Cisco Systems, Inc.
+     All rights reserved.";
+
+  revision 2023-07-06 {
+    semver:module-version "1.0.0";
+    description
+      "IOS XR 7.11.1 revision.";
+  }
+  revision 2022-02-23 {
+    description
+      "IOS XR 7.5.4 revision.";
+  }
+
+  rpc clear-lsp-counters-all {
+    csc:xr-task "mpls-te";
+    csc:cli-command "clear mpls traffic-eng counters signaling all";
+    description
+      "clear mpls traffic-eng signaling counters for all tunnels";
+  }
+
+  rpc clear-lsp-counters-name {
+    csc:xr-task "mpls-te";
+    csc:cli-command "clear mpls traffic-eng counters signaling name <name>";
+    description
+      "clear mpls traffic-eng signaling counters for a tunnel with given name";
+
+    input {
+      leaf name {
+        type string;
+        mandatory true;
+        description
+          "Tunnel name";
+      }
+    }
+  }
+  rpc reoptimize-lsp-all {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng reoptimize all";
+    description
+      "Force an immediate reoptimization of all mpls traffic-eng tunnels";
+  }
+
+  rpc reoptimize-lsp-name {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng reoptimize name <name>";
+    description
+      "Force an immediate reoptimization of a tunnel with given name";
+
+    input {
+      leaf name {
+        type string;
+        mandatory true;
+        description
+          "Tunnel name";
+      }
+    }
+  }
+  rpc resetup-lsp-all {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng resetup all";
+    description
+      "Force an immediate tear down and setup of all mpls traffic-eng tunnels";
+  }
+
+  rpc resetup-lsp-name {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng resetup name <name>";
+    description
+      "Force an immediate tear down and setup a tunnel with given name";
+
+    input {
+      leaf name {
+        type string;
+        mandatory true;
+        description
+          "Tunnel name";
+      }
+    }
+  }
+  rpc auto-bw-apply-all {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng auto-bw apply all";
+    description
+      "Apply auto-bandwidth adjustment instantly on all mpls traffic-eng tunnels";
+  }
+
+  rpc auto-bw-apply-name {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng auto-bw apply name <name>";
+    description
+      "Apply auto-bandwidth adjustment instantly on a tunnel with given name";
+
+    input {
+      leaf name {
+        type string;
+        mandatory true;
+        description
+          "Tunnel name";
+      }
+    }
+  }
+  rpc tunnel-teardown-all {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng teardown all";
+    description
+      "Force an immediate tear down and setup of all mpls traffic-eng tunnels";
+  }
+
+  rpc tunnel-teardown-head {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng teardown head";
+    description
+      "Force an immediate tear down and setup of mpls traffic-eng head tunnels";
+  }
+
+  rpc tunnel-teardown-mid {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng teardown mid";
+    description
+      "Force an immediate tear down and setup of mpls traffic-eng mid tunnels";
+  }
+
+  rpc tunnel-teardown-tail {
+    csc:xr-task "mpls-te";
+    csc:cli-command "mpls traffic-eng teardown tail";
+    description
+      "Force an immediate tear down and setup of mpls traffic-eng tail tunnels";
+  }
+}

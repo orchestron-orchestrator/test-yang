@@ -1,0 +1,1200 @@
+
+/*
+ * Copyright (c) 2025 Juniper Networks, Inc.
+ * All rights reserved.
+ */
+ module junos-rpc-request {
+   namespace "http://yang.juniper.net/junos/rpc/request";
+
+   prefix request;
+
+   import junos-common-types {
+     prefix jt;
+     revision-date 2024-01-01;
+   }
+
+   organization "Juniper Networks, Inc.";
+
+   contact "yang-support@juniper.net";
+
+   description "Junos RPC YANG module for request command(s)";
+
+   revision 2024-01-01 {
+     description "Junos: 20241218.202301_builder.r1463698";
+   }
+
+   rpc request-commit-server-cleanup {
+     description "Commit queue clean up operations";
+     input {
+       choice queue-selector {
+         case id {
+           leaf id {
+             description "Clean up queue id";
+             type union {
+               type uint32;
+               type string {
+                 pattern "<.*>|$.*";
+               }
+             }
+           }
+         }
+         case job-status {
+           leaf job-status {
+             description "Clean up all entries with specified status";
+             type enumeration {
+               enum "error" {
+                 description "Remove jobs that had errors";
+               }
+               enum "pending" {
+                 description "Remove jobs that are pending";
+               }
+               enum "success" {
+                 description "Remove jobs that succeeded";
+               }
+             }
+           }
+         }
+       }
+     }
+   }
+   rpc request-commit-server-pause {
+     description "Pause the commit server";
+   }
+   rpc request-commit-server-start {
+     description "Start the commit server";
+   }
+   rpc request-delta-exporter-initialize {
+     description "Initialize delta exporter database";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-yang-add {
+     description "Add YANG module(s) and action/translation script(s)";
+     input {
+       leaf package {
+         description "Unique ID for future op - delete/update";
+         type string;
+         mandatory true;
+       }
+       leaf-list module {
+         ordered-by user;
+         description "YANG module(s) path";
+         type jt:filename;
+       }
+       leaf-list action-script {
+         ordered-by user;
+         description "Action script path";
+         type jt:filename;
+       }
+       leaf-list translation-script {
+         ordered-by user;
+         description "Translation script path";
+         type jt:filename;
+       }
+       leaf-list deviation-module {
+         ordered-by user;
+         description "Deviation module path";
+         type jt:filename;
+       }
+       leaf proxy-xml {
+         description "XML proxy YANG module(s)";
+         type empty;
+       }
+       leaf snmp {
+         description "Add custom MIB in YANG format";
+         type empty;
+       }
+       choice re-choice {
+         case re0 {
+           leaf re0 {
+             description "Add/Delete YANG module(s) on RE0";
+             type empty;
+           }
+         }
+         case re1 {
+           leaf re1 {
+             description "Add/Delete YANG module(s) on RE1";
+             type empty;
+           }
+         }
+         case other-routing-engine {
+           leaf other-routing-engine {
+             description "Add/Delete YANG module(s) on other RE";
+             type empty;
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-yang-delete {
+     description "Remove YANG package";
+     input {
+       leaf package {
+         description "ID to be removed";
+         type string;
+         mandatory true;
+       }
+       choice re-choice {
+         case re0 {
+           leaf re0 {
+             description "Add/Delete YANG module(s) on RE0";
+             type empty;
+           }
+         }
+         case re1 {
+           leaf re1 {
+             description "Add/Delete YANG module(s) on RE1";
+             type empty;
+           }
+         }
+         case other-routing-engine {
+           leaf other-routing-engine {
+             description "Add/Delete YANG module(s) on other RE";
+             type empty;
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-yang-enable {
+     description "Enable YANG package to JUNOS translation";
+     input {
+       leaf package {
+         description "ID";
+         type string;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-yang-disable {
+     description "Disable YANG package to JUNOS translation";
+     input {
+       leaf package {
+         description "ID";
+         type string;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-yang-validate {
+     description "Validate YANG module(s) and action/translation script(s)";
+     input {
+       leaf-list module {
+         ordered-by user;
+         description "Name of the YANG module to be validated";
+         type jt:filename;
+       }
+       leaf-list translation-script {
+         ordered-by user;
+         description "Name of the translation-script to be validated";
+         type jt:filename;
+       }
+       leaf-list action-script {
+         ordered-by user;
+         description "Name of the action-script to be validated";
+         type jt:filename;
+       }
+       leaf proxy-xml {
+         description "XML proxy YANG module";
+         type empty;
+       }
+       leaf snmp {
+         description "Validate custom MIB in YANG format";
+         type empty;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-yang-update {
+     description "Update YANG module(s) and action/translation script(s)";
+     input {
+       leaf package {
+         description "ID";
+         type string;
+         mandatory true;
+       }
+       leaf-list module {
+         ordered-by user;
+         description "YANG module(s) path";
+         type jt:filename;
+       }
+       leaf-list translation-script {
+         ordered-by user;
+         description "Translation script path";
+         type jt:filename;
+       }
+       leaf-list deviation-module {
+         ordered-by user;
+         description "Deviation module path";
+         type jt:filename;
+       }
+       leaf-list action-script {
+         ordered-by user;
+         description "Action script path";
+         type jt:filename;
+       }
+       leaf proxy-xml {
+         description "XML proxy YANG module(s)";
+         type empty;
+       }
+       leaf snmp {
+         description "Update custom MIBs in YANG format";
+         type empty;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-logout-user {
+     description "Forcibly end user's CLI login session";
+     input {
+       uses command-forwarding;
+       leaf pid {
+         description "Management process ID for user";
+         type union {
+           type uint32;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+       }
+     }
+     output {
+       container logout-user {
+         uses logout-user-block;
+       }
+     }
+   }
+   rpc request-json-configuration-conversion {
+     description "Convert the given JSON configuration file as per Junos";
+     input {
+       leaf filename {
+         description "Path to the input JSON configuration file";
+         type jt:filename;
+         mandatory true;
+       }
+       leaf output-filename {
+         description "Path to the output file";
+         type string {
+         }
+         mandatory true;
+       }
+       leaf origin-schema {
+         description "Specify the Yang schema origin";
+         default "juniper";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-license-add {
+     description "Add license keys from file, local or from server";
+     input {
+       leaf filename {
+         description "Filename (URL, local, remote, or floppy)";
+         type string;
+       }
+       leaf key-data {
+         description "License key data";
+         type string;
+       }
+     }
+     output {
+       container add-license-results {
+         uses add-license-results-block;
+       }
+     }
+   }
+   rpc request-license-delete {
+     description "Delete license keys";
+     input {
+       choice delete-choice {
+         case all {
+           leaf all {
+             description "Delete all license keys";
+             type empty;
+           }
+         }
+         case license-identifier {
+           leaf license-identifier {
+             description "Identifier of installed license key";
+             type string;
+           }
+         }
+         case license-identifier-list {
+           leaf-list license-identifier-list {
+             ordered-by user;
+             description "Identifier of installed license key";
+             type string;
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-license-save {
+     description "Save license keys to file, local or to server";
+     input {
+       leaf filename {
+         description "Filename (URL, local, remote, or floppy)";
+         type string;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-license-update {
+     description "Start autoupdate license keys from LMS servers";
+     input {
+       leaf trial {
+         description "Start autoupdate trial license keys from LMS servers";
+         type empty;
+       }
+     }
+     output {
+       container inform {
+         uses inform-block;
+       }
+     }
+   }
+   rpc license-revoke-licenses {
+     description "Revoke licenses in the Authorization key";
+     status deprecated;
+     input {
+       leaf filename {
+         description "Filename (URL, local, remote, or floppy)";
+         type string;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc fips-selftest {
+     description "Execute FIPS known answer tests (KATs)";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-system-erase {
+     description "Secure erase SATA drives";
+   }
+   rpc request-boot-console {
+     description "Switch boot-console port";
+     input {
+       uses command-forwarding;
+       leaf port {
+         description "Choice of port";
+         type enumeration {
+           enum "console" {
+             description "Set Console port as boot console";
+           }
+           enum "auxiliary" {
+             description "Set Auxiliary port as boot console";
+           }
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-system-storage-cleanup {
+     description "Clean up temporary files and rotate logs";
+     input {
+       uses command-forwarding;
+       leaf dry-run {
+         description "Only list the cleanup candidates, do not remove them";
+         type empty;
+       }
+       leaf no-confirm {
+         description "Do not ask for confirmation";
+         type empty;
+       }
+     }
+     output {
+       container system-storage-cleanup-information {
+         uses system-storage-cleanup-information-block;
+       }
+     }
+   }
+   rpc request-system-storage-expand-user {
+     description "Manage size of user disk";
+     input {
+       leaf operation {
+         description "Expand user disk or revert to default";
+         type enumeration {
+           enum "expand" {
+             description "Expand user disk to maximum available size";
+           }
+           enum "restore" {
+             description "Restore user disk to default setting";
+           }
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-process-terminate {
+     description "Terminate the process";
+     input {
+       leaf process-id {
+         description "Process ID";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "1 .. 4194304";
+           }
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc mgd-jnu-role {
+     description "JNU Role";
+     input {
+       uses command-forwarding;
+       leaf jnu-role {
+         type enumeration {
+           enum "controller" {
+             description "Controller";
+           }
+           enum "satellite" {
+             description "Satellite";
+           }
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc mgd-jnu-schema-delete {
+     description "Delete a JNU satellite schema";
+     input {
+       leaf model {
+         description "Satellite model";
+         type string;
+         mandatory true;
+       }
+       leaf version {
+         description "Satellite version";
+         type string {
+         }
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc mgd-jnu-schema-merge {
+     description "Merge JNU schema to this controller";
+     input {
+       leaf satschema {
+         description "Satellite Schema Path";
+         type jt:filename;
+         mandatory true;
+       }
+       leaf conschema {
+         description "Controller Schema Path";
+         type jt:filename;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc mgd-jnu-schema-add {
+     description "Add JNU schema to this controller";
+     input {
+       leaf model {
+         description "Satellite model";
+         type string;
+         mandatory true;
+       }
+       leaf version {
+         description "Satellite version";
+         type string {
+         }
+         mandatory true;
+       }
+       leaf filename {
+         description "Satellite schema TLV package filename";
+         type jt:filename;
+         mandatory true;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-jnu-satellite-sync {
+     description "Sync satellite with controller";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc twamp-test-start {
+     description "Start TWAMP test sessions";
+     input {
+       leaf control-connection {
+         description "Name of the control connection";
+         default "all";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc twamp-test-stop {
+     description "Stop TWAMP test sessions";
+     input {
+       leaf control-connection {
+         description "Name of the control connection";
+         default "all";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-l2ckt-switchover {
+     description "Perform l2circuit switchover";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf neighbor {
+         description "IP address of neighbor";
+         type jt:ipv4addr;
+         mandatory true;
+       }
+       leaf virtual-circuit-id {
+         description "Layer 2 circuit ID";
+         default "all";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-vpls-switchover {
+     description "Perform LDP VPLS pseudowire switchover";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf instance {
+         description "Name of VPLS instance";
+         type string;
+         mandatory true;
+       }
+       leaf neighbor {
+         description "IP address of neighbor";
+         type jt:ipv4addr;
+         mandatory true;
+       }
+       leaf vpls-id {
+         description "Layer 2 circuit ID";
+         default "all";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-mpls-lsp-autobandwidth-adjust {
+     description "Request LSP autobandwidth adjustment now";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf regex {
+         description "Regular expression for LSP names to match";
+         type string;
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-mpls-container-lsp-autobandwidth-adjust {
+     description "Request LSP autobandwidth adjustment now";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf regex {
+         description "Regular expression for LSP names to match";
+         type string;
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-mpls-container-lsp-normalization {
+     description "Request container LSP normalization now";
+     input {
+       choice daemon-select {
+         case logical-system {
+           leaf logical-system {
+             description "Name of logical system, or 'all'";
+             type string {
+             }
+           }
+         }
+       }
+       leaf regex {
+         description "Regular expression for LSP names to match";
+         type string;
+       }
+       leaf instance {
+         description "Name of routing instance";
+         type string;
+       }
+       leaf bandwidth {
+         description "Use the bandwidth for manual normalization";
+         type union {
+           type uint64;
+           type string {
+             pattern "<.*>|$.*";
+           }
+         }
+       }
+     }
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-mpls-lable-range-reserve {
+     description "Request label space repartition now";
+     output {
+       choice output_c {
+         case output-tag {
+           leaf output {
+             type string;
+           }
+         }
+         case multichassis-tag {
+           anyxml multi-routing-engine-results;
+         }
+       }
+     }
+   }
+   rpc request-validation-policy {
+     description "Request policy reevaluation";
+     input {
+       leaf record {
+         description "Filter by record";
+         type jt:ipprefix;
+       }
+       leaf instance {
+         description "Name of route validation instance";
+         type string;
+       }
+     }
+     output {
+       container rv-request-policy-information {
+         uses rv-request-policy-information-block;
+       }
+     }
+   }
+   rpc request-validation-reload-source-file {
+     description "Request reload source file";
+     output {
+       container rv-reload-source-file-information {
+         uses rv-reload-source-file-information-block;
+       }
+     }
+   }
+   grouping logout-user-block {
+     leaf logout-user-message {
+       type string;
+     }
+   }
+   grouping add-license-results-block {
+     leaf add-success {
+       type empty;
+       description "Add completed with no errors";
+     }
+     leaf add-error-count {
+       type int32;
+       description "Number of errors during add license operation";
+     }
+     list add-individual-result {
+       description "Report status of individual license add operation";
+       leaf filename {
+         type string;
+         description "File name in which error exist";
+       }
+       leaf line-number {
+         type int32;
+         description "Line number where error exist";
+       }
+       leaf operation-status {
+         type string;
+         description "Defines that status of a license operation";
+       }
+       leaf name {
+         type string;
+         description "Identifier for this object";
+       }
+       leaf message {
+         type string;
+         description "Text to explain the status of an operation";
+       }
+     }
+   }
+   grouping inform-block {
+     leaf source-daemon {
+       type string;
+     }
+     leaf message {
+       type string;
+       description "Syslog message text";
+     }
+   }
+   grouping system-storage-cleanup-information-block {
+     leaf dre-repository-status {
+       type string;
+       description "DRE repository status";
+     }
+     container file-list {
+       container file {
+         leaf size {
+           type int32;
+           description "File size in bytes";
+         }
+         leaf date {
+           type string;
+           description "Modification time";
+         }
+         leaf file-name {
+           type string;
+           description "File name";
+         }
+         container file-fetch {
+           leaf source-filename {
+             type string;
+           }
+           leaf source-address {
+             type string;
+           }
+           leaf staging-directory {
+             type string;
+           }
+           leaf routing-instance {
+             type string;
+           }
+           leaf cert-file {
+             type string;
+           }
+           leaf no-check-certificate {
+             type string;
+           }
+           leaf no-stage {
+             type string;
+           }
+           leaf destination-filename {
+             type string;
+           }
+         }
+         container file-put {
+           leaf source-filename {
+             type string;
+           }
+           leaf destination-filename {
+             type string;
+           }
+           leaf source-address {
+             type string;
+           }
+           leaf routing-instance {
+             type string;
+           }
+           leaf cleanup-source {
+             type empty;
+           }
+           leaf filename {
+             type string;
+           }
+           leaf encoding {
+             type string;
+             description "Encoding type: ascii or base64";
+           }
+           leaf permission {
+             type string;
+             description "Permission of destination file";
+           }
+           leaf delete-if-exist {
+             type empty;
+             description "Delete destination file if it exists";
+           }
+           leaf file-contents {
+             type string;
+             description "Base64 encoded contents of file";
+           }
+         }
+         container send-file {
+           leaf source-filename {
+             type string;
+           }
+           leaf alias-filename {
+             type string;
+           }
+           leaf display-spinner {
+             type empty;
+           }
+           leaf source-address {
+             type string;
+           }
+           leaf routing-instance {
+             type string;
+           }
+         }
+       }
+     }
+     container dre-repository-content {
+       leaf dre-repository-content-header {
+         type string;
+         description "DRE repository content header";
+       }
+       leaf dre-repository-content-entry {
+         type string;
+         description "DRE repository content entry";
+       }
+       leaf dre-repository-content-footer {
+         type string;
+         description "DRE repository content footer";
+       }
+     }
+   }
+   grouping rv-request-policy-information-block {
+     leaf ip-prefix-count {
+       type uint32;
+     }
+     leaf ip6-prefix-count {
+       type uint32;
+     }
+   }
+   grouping rv-reload-source-file-information-block {
+     leaf rv-reload-source-file-name {
+       type string;
+     }
+   }
+ }

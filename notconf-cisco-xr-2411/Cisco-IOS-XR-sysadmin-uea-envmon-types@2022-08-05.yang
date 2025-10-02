@@ -1,0 +1,69 @@
+module Cisco-IOS-XR-sysadmin-uea-envmon-types {
+  namespace "http://www.cisco.com/ns/Cisco-IOS-XR-sysadmin-uea-envmon-types";
+  prefix envmon-types;
+
+  import tailf-common {
+    prefix tailf;
+  }
+
+  revision 2022-08-05 {
+    description
+      "Add gen2 common low power CLI.";
+  }
+  revision 2017-11-27 {
+    description
+      "Add graceful shutdown disable CLI.";
+  }
+  revision 2017-05-01 {
+    description
+      "Namespace change to comply with Cisco guidelines on namespace";
+  }
+
+  tailf:id "http://www.cisco.com/panini/calvados/envmon/types";
+
+  typedef num_pm {
+    type uint32 {
+      range "0..5";
+    }
+  }
+
+  grouping fan-speed-group {
+    leaf raise-fan-speed {
+      tailf:cli-drop-node-name;
+      type uint32 {
+        range "0..100";
+      }
+      config false;
+    }
+  }
+
+  grouping fan-ctrl-optics-group {
+    leaf fan-ctrl-optics {
+      tailf:cli-drop-node-name;
+      type uint32 {
+        range "0..1";
+      }
+      config false;
+    }
+  }
+
+  grouping vin-uv-shut-group {
+    leaf graceful-shutdown {
+      tailf:cli-drop-node-name;
+      type uint32 {
+        range "0..1";
+      }
+      config false;
+    }
+  }
+
+  grouping gen2-common-lowpower-group {
+    leaf gen2-common-lowpower {
+      tailf:cli-drop-node-name;
+      type uint32 {
+        range "0..1";
+      }
+      config false;
+    }
+  }
+}

@@ -1,0 +1,323 @@
+
+/*
+ * Copyright (c) 2025 Juniper Networks, Inc.
+ * All rights reserved.
+ */
+ module junos-rpc-l2 {
+   namespace "http://yang.juniper.net/junos/rpc/l2";
+
+   prefix l2;
+
+   import junos-common-types {
+     prefix jt;
+     revision-date 2024-01-01;
+   }
+
+   organization "Juniper Networks, Inc.";
+
+   contact "yang-support@juniper.net";
+
+   description "Junos RPC YANG module for l2 command(s)";
+
+   revision 2024-01-01 {
+     description "Junos: 20241218.202301_builder.r1463698";
+   }
+
+   rpc get-bridge-l2-instance-information {
+     description "Show bridge domain information";
+     input {
+       leaf instance {
+         description "Display information for a specified instance";
+         type string;
+       }
+       leaf bridge-domain-name {
+         description "Display information for a specified bridge domain";
+         type string;
+       }
+       leaf interface {
+         description "Name of interface for which to display table";
+         type string;
+       }
+       leaf verbosity {
+         default "brief";
+         type enumeration {
+           enum "detail" {
+             description "Display detailed output";
+           }
+           enum "brief" {
+             description "Display brief output";
+           }
+           enum "extensive" {
+             description "Display extensive output";
+           }
+         }
+       }
+     }
+     output {
+       container bridge-l2-instance-information {
+         uses bridge-l2-instance-information-block;
+       }
+     }
+   }
+   rpc get-bridge-l2-instance-operational-information {
+     description "Show operational bridging instance";
+     output {
+       container bridge-l2-instance-information {
+         uses bridge-l2-instance-information-block;
+       }
+     }
+   }
+   rpc get-bridge-l2-instance-mac-ip-db {
+     description "Show IP table for EVPN instances";
+     input {
+       leaf instance {
+         description "Display information for a specified instance";
+         type string;
+       }
+       leaf bridge-domain {
+         description "Name of bridging domain, or 'all'";
+         type string;
+       }
+       leaf interface {
+         description "Display MAC IP table for a specified interface";
+         type string;
+       }
+       leaf vlan-id {
+         description "Display MAC address learned on a specified VLAN";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "0 .. 4094";
+           }
+         }
+       }
+       leaf address {
+         description "MAC address";
+         type jt:mac-addr;
+       }
+       leaf local {
+         description "Display local MAC address";
+         type empty;
+       }
+       leaf remote {
+         description "Display remote MAC address";
+         type empty;
+       }
+       leaf static {
+         description "Display static MAC address";
+         type empty;
+       }
+       leaf dynamic {
+         description "Display dynamic MAC address";
+         type empty;
+       }
+       leaf arp-nd {
+         description "Display ARP/ND entries";
+         type empty;
+       }
+       leaf family {
+         type enumeration {
+           enum "ipv4" {
+             description "Display IPv4 entries";
+           }
+           enum "ipv6" {
+             description "Display IPv6 entries";
+           }
+         }
+       }
+       leaf count {
+         description "Display count only";
+         type empty;
+       }
+       leaf verbosity {
+         default "brief";
+         type enumeration {
+           enum "detail" {
+             description "Display detailed output";
+           }
+           enum "brief" {
+             description "Display brief output";
+           }
+           enum "extensive" {
+             description "Display extensive output";
+           }
+         }
+       }
+     }
+     output {
+       container bridge-l2-instance-mac-ip-db {
+         uses bridge-l2-instance-mac-ip-db-block;
+       }
+     }
+   }
+   rpc get-bridge-l2-instance-macdb {
+     description "Show media access control table";
+     input {
+       leaf instance {
+         description "Display information for a specified instance";
+         type string;
+       }
+       leaf bridge-domain {
+         description "Name of bridging domain, or 'all'";
+         type string;
+       }
+       leaf interface {
+         description "Display MAC table for a specified interface";
+         type string;
+       }
+       leaf vlan-id {
+         description "Display MAC address learned on a specified VLAN";
+         type union {
+           type string {
+             pattern "<.*>|$.*";
+           }
+           type uint32 {
+             range "0 .. 4094";
+           }
+         }
+       }
+       leaf address {
+         description "MAC address";
+         type jt:mac-addr;
+       }
+       leaf local {
+         description "Display local MAC address";
+         type empty;
+       }
+       leaf remote {
+         description "Display remote MAC address";
+         type empty;
+       }
+       leaf static {
+         description "Display static MAC address";
+         type empty;
+       }
+       leaf dynamic {
+         description "Display dynamic MAC address";
+         type empty;
+       }
+       leaf arp-nd {
+         description "Display ARP/ND entries";
+         type empty;
+       }
+       leaf count {
+         description "Display count only";
+         type empty;
+       }
+       leaf verbosity {
+         default "brief";
+         type enumeration {
+           enum "detail" {
+             description "Display detailed output";
+           }
+           enum "brief" {
+             description "Display brief output";
+           }
+           enum "extensive" {
+             description "Display extensive output";
+           }
+         }
+       }
+     }
+     output {
+       container bridge-l2-instance-macdb {
+         uses bridge-l2-instance-macdb-block;
+       }
+     }
+   }
+   grouping bridge-l2-instance-information-block {
+     container bridge-instance-group {
+       leaf brd-routing-instance {
+         type string;
+       }
+       leaf brd-bridging-domain {
+         type string;
+       }
+       leaf brd-instance-flags {
+         type string;
+       }
+       leaf brd-brief-summary {
+         type empty;
+       }
+       leaf brd-bridge-vlan {
+         type string;
+       }
+       leaf brd-interface-name {
+         type string;
+       }
+       leaf brd-instance-state {
+         type string;
+       }
+       leaf brd-macs-learned {
+         type uint32;
+       }
+     }
+   }
+   grouping bridge-l2-instance-mac-ip-db-block {
+     list bridge-mac-ip-entry {
+       leaf brd-routing-instance {
+         type string;
+       }
+       leaf brd-bridging-domain {
+         type string;
+       }
+       leaf brd-ip-address {
+         type jt:ipaddr;
+       }
+       leaf brd-mac-address {
+         type jt:mac-addr;
+       }
+       leaf brd-mac-ip-flags {
+         type string;
+       }
+       leaf brd-interface-name {
+         type string;
+       }
+       leaf brd-active-source {
+         type string;
+       }
+       leaf brd-mac-ip-rpd-flags {
+         type string;
+       }
+     }
+   }
+   grouping bridge-l2-instance-macdb-block {
+     list bridge-mac-entry {
+       leaf brd-routing-instance {
+         type string;
+       }
+       leaf brd-bridging-domain {
+         type string;
+       }
+       leaf brd-bridge-vlan {
+         type string;
+       }
+       leaf brd-mac-address {
+         type jt:mac-addr;
+       }
+       leaf brd-mac-flags {
+         type string;
+       }
+       leaf brd-interface-name {
+         type string;
+       }
+       leaf brd-active-source {
+         type string;
+       }
+       leaf brd-mac-vlan {
+         type uint32;
+       }
+       leaf brd-mac-entry-age {
+         type string;
+       }
+       leaf brd-pseudo-source {
+         type string;
+       }
+       leaf brd-mac-entry-flags {
+         type string;
+       }
+     }
+   }
+ }

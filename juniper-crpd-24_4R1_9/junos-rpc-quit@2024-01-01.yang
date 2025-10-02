@@ -1,0 +1,34 @@
+
+/*
+ * Copyright (c) 2025 Juniper Networks, Inc.
+ * All rights reserved.
+ */
+ module junos-rpc-quit {
+   namespace "http://yang.juniper.net/junos/rpc/quit";
+
+   prefix quit;
+
+   import junos-common-types {
+     prefix jt;
+     revision-date 2024-01-01;
+   }
+
+   organization "Juniper Networks, Inc.";
+
+   contact "yang-support@juniper.net";
+
+   description "Junos RPC YANG module for quit command(s)";
+
+   revision 2024-01-01 {
+     description "Junos: 20241218.202301_builder.r1463698";
+   }
+
+   rpc request-end-session {
+     description "Exit the management session";
+     output {
+       leaf end-session {
+         type empty;
+       }
+     }
+   }
+ }

@@ -1,0 +1,242 @@
+module Cisco-IOS-XR-cnbng-nal-act {
+  namespace "http://cisco.com/ns/yang/Cisco-IOS-XR-cnbng-nal-act";
+  prefix cnbng-nal-act;
+
+  import cisco-semver {
+    prefix semver;
+  }
+  import Cisco-IOS-XR-types {
+    prefix csc;
+  }
+
+  organization
+    "Cisco Systems, Inc.";
+  contact
+    "Cisco Systems, Inc.
+     Customer Service
+
+     Postal: 170 West Tasman Drive
+     San Jose, CA 95134
+
+     Tel: +1 800 553-NETS
+
+     E-mail: cs-yang@cisco.com";
+  description
+    "This module contains a collection of YANG definitions
+     for Cisco IOS-XR action package configuration.
+
+     Copyright (c) 2018-2023 by Cisco Systems, Inc.
+     All rights reserved.";
+
+  revision 2022-02-25 {
+    semver:module-version "1.2.0";
+    description
+      "IOS XR 7.7.1 revision updated clear dynamic route CLI filters
+       2022-01-21
+         IOS XR 7.7.1 revision added srg clear CLIs";
+  }
+  revision 2021-08-29 {
+    semver:module-version "1.1.0";
+    description
+      "IOS XR 7.6.1 revision removing cnbng-nal task";
+  }
+  revision 2021-02-11 {
+    semver:module-version "1.0.0";
+    description
+      "IOS XR 7.4.1 revision removing unused imports.";
+  }
+  revision 2020-09-10 {
+    semver:module-version "1.0.0";
+    description
+      "IOS XR 7.3.1 revision.";
+  }
+
+  rpc clear-cnbng-nal-cp-association {
+    csc:cli-command "clear cnbng-nal cp-association";
+    description
+      "Clear cnBNG NAL CP server association";
+  }
+
+  rpc clear-cnbng-nal-cp-association-location {
+    csc:cli-command "clear cnbng-nal cp-association location <node-location>";
+    description
+      "Clear cnBNG NAL CP server association for given node";
+
+    input {
+      leaf node-location {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Node location";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-dynamic-routes-afi {
+    csc:cli-command "clear cnbng-nal dynamic-routes afi <afi-type>";
+    description
+      "Execute clear cnBNG NAL Dynamic-routes AFI-type";
+
+    input {
+      leaf afi-type {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Address-family";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-dynamic-routes-afi-location {
+    csc:cli-command "clear cnbng-nal dynamic-routes afi <afi-type> location <node-location>";
+    description
+      "Execute clear cnBNG NAL Dynamic-routes AFI for the given node";
+
+    input {
+      leaf afi-type {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Address-family";
+      }
+      leaf node-location {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Node location";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-dynamic-routes-afi-srg-group {
+    csc:cli-command "clear cnbng-nal dynamic-routes afi <afi-type> srg-group <srg-group-name>";
+    description
+      "Execute clear cnBNG NAL Dynamic-routes AFI-type srg-group";
+
+    input {
+      leaf afi-type {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Address-family";
+      }
+      leaf srg-group-name {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "SRG group name";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-dynamic-routes-afi-srg-group-location {
+    csc:cli-command "clear cnbng-nal dynamic-routes afi <afi-type> srg-group <srg-group-name> location <node-location>";
+    description
+      "Execute clear cnBNG NAL Dynamic-routes AFI srg-group for the given node";
+
+    input {
+      leaf afi-type {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Address-family";
+      }
+      leaf srg-group-name {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "SRG group name";
+      }
+      leaf node-location {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Node location";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-dynamic-routes-history {
+    csc:cli-command "clear cnbng-nal dynamic-routes history";
+    description
+      "Clear cnBNG NAL Dynamic-routes history";
+  }
+
+  rpc clear-cnbng-nal-dynamic-routes-history-location {
+    csc:cli-command "clear cnbng-nal dynamic-routes history location <node-location>";
+    description
+      "Clear cnBNG NAL Dynamic-routes history for given node";
+
+    input {
+      leaf node-location {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Node location";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-subscriber-disconnect-history {
+    csc:cli-command "clear cnbng-nal subscriber disconnect-history";
+    description
+      "Clear cnBNG NAL subscriber disconnect-history entries";
+  }
+
+  rpc clear-cnbng-nal-subscriber-disconnect-history-location {
+    csc:cli-command "clear cnbng-nal subscriber disconnect-history location <node-location>";
+    description
+      "Clear cnBNG NAL subscriber disconnect-history entries for given node";
+
+    input {
+      leaf node-location {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Node location";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-cp-srg-association-srg-group {
+    csc:cli-command "clear cnbng-nal cp-srg-association srg-group <srg-group-name>";
+    description
+      "Execute clear cnBNG NAL CP SRG association srg-group";
+
+    input {
+      leaf srg-group-name {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "SRG group name";
+      }
+    }
+  }
+  rpc clear-cnbng-nal-cp-srg-association-srg-group-location {
+    csc:cli-command "clear cnbng-nal cp-srg-association srg-group <srg-group-name> location <node-location>";
+    description
+      "Execute clear cnBNG NAL CP SRG association srg-group for the given node";
+
+    input {
+      leaf srg-group-name {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "SRG group name";
+      }
+      leaf node-location {
+        csc:cli-name "*";
+        type string;
+        mandatory true;
+        description
+          "Node location";
+      }
+    }
+  }
+}

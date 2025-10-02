@@ -1,0 +1,550 @@
+
+/*
+ * Copyright (c) 2025 Juniper Networks, Inc.
+ * All rights reserved.
+ */
+ module junos-rpc-l2cpd {
+   namespace "http://yang.juniper.net/junos/rpc/l2cpd";
+
+   prefix l2cpd;
+
+   import junos-common-types {
+     prefix jt;
+     revision-date 2024-01-01;
+   }
+
+   organization "Juniper Networks, Inc.";
+
+   contact "yang-support@juniper.net";
+
+   description "Junos RPC YANG module for l2cpd command(s)";
+
+   revision 2024-01-01 {
+     description "Junos: 20241218.202301_builder.r1463698";
+   }
+
+   rpc get-l2cpd-task-information {
+     description "Show l2cpd per-task information";
+     input {
+       leaf level {
+         default "summary";
+         type enumeration {
+           enum "summary" {
+             description "Display summary output (default)";
+           }
+         }
+       }
+       leaf task-name {
+         description "Name of task";
+         type string;
+       }
+     }
+   }
+   rpc get-l2cpd-tasks-io-statistics {
+     description "Show task I/O statistics";
+   }
+   rpc get-l2cpd-task-memory {
+     description "Show memory utilization of l2cp tasks";
+     input {
+       leaf level {
+         type enumeration {
+           enum "summary" {
+             description "Display current and maximum memory usage";
+           }
+           enum "brief" {
+             description "Display current/maximum/available memory";
+           }
+           enum "detail" {
+             description "Display memory usage by individual users";
+           }
+           enum "history" {
+             description "Display memory usage in the recent past";
+           }
+         }
+       }
+     }
+     output {
+       container task-memory-information {
+         uses task-memory-information-block;
+       }
+     }
+   }
+   grouping task-memory-information-block {
+     leaf minute-ending {
+       type string;
+       description "Minute Ending timestamp";
+     }
+     leaf in-use {
+       type uint32;
+       description "Memory usage";
+     }
+     leaf median {
+       type uint32;
+       description "Memory usage at median";
+     }
+     leaf maximum {
+       type uint32;
+       description "Maximum memory utilization";
+     }
+     leaf maximum-timestamp {
+       type string;
+       description "Maximum memory utilization timestamp";
+     }
+     leaf minimum {
+       type uint32;
+       description "Minimum memory utilization";
+     }
+     leaf minimum-timestamp {
+       type string;
+       description "Minimum memory utilization timestamp";
+     }
+     container task-memory-overall-report {
+       container task-size-block-list {
+         list task-size-block {
+           leaf tsb-size {
+             type int32;
+             description "Size of this block";
+           }
+           leaf tsb-terse-transient {
+             type empty;
+           }
+           leaf tsb-terse-exclusive {
+             type empty;
+           }
+           leaf tsb-terse-fullpage {
+             type empty;
+           }
+           leaf tsb-allocs {
+             type string;
+             description "Number of items allocated now not using malloc";
+           }
+           leaf tsb-mallocs {
+             type string;
+             description "Number of items allocated using malloc";
+           }
+           leaf tsb-alloc-bytes {
+             type string;
+             description "Number of items allocated in bytes";
+           }
+           leaf tsb-max-allocs {
+             type string;
+             description "Maximum items ever allocated";
+           }
+           leaf tsb-max-bytes {
+             type string;
+             description "Maximum items ever allocated in bytes";
+           }
+           leaf tsb-free-bytes {
+             type string;
+             description "Number of free bytes";
+           }
+         }
+       }
+       container task-memory-stats-list {
+         list task-memory-stats {
+           leaf tms-name {
+             type string;
+           }
+           leaf tms-allocs {
+             type string;
+             description "Number of items allocated";
+           }
+           leaf tms-mallocs {
+             type string;
+             description "Number of items allocated using malloc";
+           }
+           leaf tms-alloc-bytes {
+             type string;
+             description "Number of bytes now allocated";
+           }
+           leaf tms-max-allocs {
+             type string;
+             description "Maximum items ever allocated";
+           }
+           leaf tms-max-bytes {
+             type string;
+             description "Maximum bytes ever allocated";
+           }
+           leaf tms-free-bytes {
+             type string;
+           }
+         }
+       }
+       leaf task-memory-total-bytes {
+         type int32;
+       }
+       leaf task-memory-total-max-bytes {
+         type int32;
+       }
+       leaf task-memory-total-free-bytes {
+         type int32;
+       }
+     }
+     container task-memory-allocator-report {
+       container task-block-list {
+         list task-block {
+           leaf tb-name {
+             type string;
+             description "Name for this block";
+           }
+           leaf tb-size {
+             type int32;
+             description "Actual size of this block";
+           }
+           leaf tb-alloc-size {
+             type string;
+             description "Allocated size for this block";
+           }
+           leaf tb-terse-debug {
+             type empty;
+           }
+           leaf tb-terse-transient {
+             type empty;
+           }
+           leaf tb-terse-exclusive {
+             type empty;
+           }
+           leaf tb-terse-fullpage {
+             type empty;
+           }
+           leaf tb-alloc-blocks {
+             type string;
+             description "Number of allocated structures";
+           }
+           leaf tb-alloc-bytes {
+             type string;
+             description "Number of allocated bytes";
+           }
+           leaf tb-max-alloc-blocks {
+             type int32;
+             description "Maximum number of structures ever allocated";
+           }
+           leaf tb-max-alloc-bytes {
+             type int32;
+             description "Maximum number of bytes ever allocated";
+           }
+         }
+       }
+       container task-lite-page-list {
+         list task-lite-page {
+           leaf tlp-name {
+             type string;
+             description "Name of this pool";
+           }
+           leaf tlp-alloc-pages {
+             type string;
+             description "Number of pages allocated";
+           }
+           leaf tlp-alloc-bytes {
+             type string;
+             description "Number of bytes allocated";
+           }
+           leaf tlp-max-alloc-pages {
+             type string;
+             description "Maximum pages ever allocated";
+           }
+           leaf tlp-max-alloc-bytes {
+             type string;
+             description "Maximum bytes ever allocated";
+           }
+         }
+       }
+       leaf task-memory-total-bytes {
+         type int32;
+       }
+       leaf task-memory-total-max-bytes {
+         type int32;
+       }
+     }
+     container task-memory-malloc-usage-report {
+       container task-malloc-list {
+         list task-malloc {
+           leaf tm-name {
+             type string;
+           }
+           leaf tm-allocs {
+             type string;
+             description "Number of allocations out";
+           }
+           leaf tm-alloc-bytes {
+             type string;
+             description "Number of bytes allocated";
+           }
+           leaf tm-max-allocs {
+             type string;
+             description "Maximum allocations ever out";
+           }
+           leaf tm-max-alloc-bytes {
+             type string;
+             description "Maximum bytes allocated";
+           }
+           leaf tm-function-calls {
+             type int32;
+             description "Number of function calls";
+           }
+         }
+       }
+       leaf task-memory-total-bytes {
+         type int32;
+       }
+       leaf task-memory-total-max-bytes {
+         type int32;
+       }
+     }
+     container task-memory-block-leak-report {
+       container task-block-list {
+       }
+     }
+     container task-memory-cookie-leak-report {
+       container task-malloc-list {
+       }
+     }
+     container task-memory-leak-report {
+       container task-memory-block-leak-report {
+         container task-block-list {
+           list task-block {
+             leaf tb-name {
+               type string;
+               description "Name for this block";
+             }
+             leaf tb-block-id {
+               type int32;
+               description "Id of the block";
+             }
+             leaf tb-size {
+               type int32;
+               description "Actual size of this block";
+             }
+             leaf tb-alloc-size {
+               type string;
+               description "Allocated size for this block";
+             }
+             leaf tb-terse-debug {
+               type empty;
+             }
+             leaf tb-terse-transient {
+               type empty;
+             }
+             leaf tb-terse-exclusive {
+               type empty;
+             }
+             leaf tb-terse-fullpage {
+               type empty;
+             }
+             leaf tb-alloc-blocks {
+               type string;
+               description "Number of allocated structures";
+             }
+             leaf tb-alloc-bytes {
+               type string;
+               description "Number of allocated bytes";
+             }
+             leaf tb-max-alloc-blocks {
+               type int32;
+               description "Maximum number of structures ever allocated";
+             }
+             leaf tb-max-alloc-bytes {
+               type int32;
+               description "Maximum number of bytes ever allocated";
+             }
+             leaf tb-leak-bytes {
+               type int32;
+               description "Number of leaked bytes for a block";
+             }
+             leaf tb-leak-blocks {
+               type int32;
+               description "Number of leaked blocks";
+             }
+           }
+         }
+         leaf task-memory-total-leak-bytes {
+           type int32;
+         }
+         container task-memory-no-leak {
+           leaf task-memory-no-leak-msg {
+             type string;
+             description "Display the respective error message";
+           }
+         }
+       }
+       container task-memory-cookie-leak-report {
+         container task-malloc-list {
+           list task-malloc {
+             leaf tm-name {
+               type string;
+             }
+             leaf tm-cookie-id {
+               type int32;
+               description "Id for this cookie";
+             }
+             leaf tm-allocs {
+               type string;
+               description "Number of allocations out";
+             }
+             leaf tm-alloc-bytes {
+               type string;
+               description "Number of bytes allocated";
+             }
+             leaf tm-max-allocs {
+               type string;
+               description "Maximum allocations ever out";
+             }
+             leaf tm-max-alloc-bytes {
+               type string;
+               description "Maximum bytes allocated";
+             }
+             leaf tm-function-calls {
+               type int32;
+               description "Number of function calls";
+             }
+             leaf tm-leak-bytes {
+               type int32;
+               description "Number of leaked bytes for a cookie";
+             }
+           }
+         }
+         leaf task-memory-total-leak-bytes {
+           type int32;
+         }
+         container task-memory-no-leak {
+           leaf task-memory-no-leak-msg {
+             type string;
+             description "Display the respective error message";
+           }
+         }
+       }
+     }
+     container task-memory-one-minute-utilization {
+       list task-memory-one-minute-utilization-block {
+         leaf minute-ending {
+           type string;
+           description "Minute Ending timestamp";
+         }
+         leaf in-use {
+           type uint32;
+           description "Memory usage";
+         }
+         leaf maximum {
+           type uint32;
+           description "Maximum memory utilization";
+         }
+         leaf maximum-timestamp {
+           type string;
+           description "Maximum memory utilization timestamp";
+         }
+         leaf minimum {
+           type uint32;
+           description "Minimum memory utilization";
+         }
+         leaf minimum-timestamp {
+           type string;
+           description "Minimum memory utilization timestamp";
+         }
+       }
+     }
+     container task-memory-twenty-minutes-utilization {
+       list task-memory-twenty-minutes-utilization-block {
+         leaf minute-ending {
+           type string;
+           description "Minute Ending timestamp";
+         }
+         leaf median {
+           type uint32;
+           description "Memory usage at median";
+         }
+         leaf maximum {
+           type uint32;
+           description "Maximum memory utilization";
+         }
+         leaf maximum-timestamp {
+           type string;
+           description "Maximum memory utilization timestamp";
+         }
+         leaf minimum {
+           type uint32;
+           description "Minimum memory utilization";
+         }
+         leaf minimum-timestamp {
+           type string;
+           description "Minimum memory utilization timestamp";
+         }
+       }
+     }
+     container task-memory-minute-significant-utilization-changes {
+       list task-memory-minute-significant-utilization-changes-block {
+         leaf minute-ending {
+           type string;
+           description "Minute Ending timestamp";
+         }
+         leaf in-use {
+           type uint32;
+           description "Memory usage";
+         }
+         leaf maximum {
+           type uint32;
+           description "Maximum memory utilization";
+         }
+         leaf maximum-timestamp {
+           type string;
+           description "Maximum memory utilization timestamp";
+         }
+         leaf minimum {
+           type uint32;
+           description "Minimum memory utilization";
+         }
+         leaf minimum-timestamp {
+           type string;
+           description "Minimum memory utilization timestamp";
+         }
+       }
+     }
+     leaf task-memory-in-use-size {
+       type int32;
+     }
+     leaf task-memory-in-use-avail {
+       type string;
+     }
+     leaf task-memory-max-size {
+       type int32;
+     }
+     leaf task-memory-max-avail {
+       type string;
+     }
+     leaf task-memory-max-when {
+       type string;
+     }
+     leaf task-memory-free-size {
+       type int32;
+     }
+     leaf task-memory-dynamic-allocs {
+       type string;
+     }
+     leaf task-memory-max-dynamic-allocs {
+       type string;
+     }
+     leaf task-memory-bss-bytes {
+       type string;
+     }
+     leaf task-memory-max-bss-bytes {
+       type string;
+     }
+     leaf task-memory-page-data-bytes {
+       type string;
+     }
+     leaf task-memory-max-page-data-bytes {
+       type string;
+     }
+     leaf task-memory-dir-bytes {
+       type string;
+     }
+     leaf task-memory-max-dir-bytes {
+       type string;
+     }
+     leaf task-memory-total-bytes-in-use {
+       type string;
+     }
+     leaf task-memory-total-bytes-percent {
+       type string;
+     }
+   }
+ }

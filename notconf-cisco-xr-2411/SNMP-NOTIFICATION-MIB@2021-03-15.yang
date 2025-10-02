@@ -1,0 +1,157 @@
+module SNMP-NOTIFICATION-MIB {
+  namespace "http://tail-f.com/ns/mibs/SNMP-NOTIFICATION-MIB/200210140000Z";
+  prefix SNMP_NOTIFICATION_MIB;
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import tailf-common {
+    prefix tailf;
+  }
+  import SNMPv2-TC {
+    prefix SNMPv2_TC;
+  }
+  import SNMP-TARGET-MIB {
+    prefix SNMP_TARGET_MIB;
+  }
+
+  revision 2021-03-15 {
+    description
+      "Add textual description for presence statements";
+  }
+  revision 2002-10-14 {
+    description
+      "";
+  }
+
+  tailf:id "";
+  tailf:snmp-mib-module-name "SNMP-NOTIFICATION-MIB";
+
+  typedef snmpNotifyNameType {
+    type string {
+      length "1 .. 32";
+    }
+  }
+
+  typedef snmpNotifyTypeType {
+    type enumeration {
+      enum "trap" {
+        value 1;
+      }
+      enum "inform" {
+        value 2;
+      }
+    }
+  }
+
+  typedef snmpTargetParamsNameType {
+    type string {
+      length "1 .. 32";
+    }
+  }
+
+  typedef snmpNotifyFilterProfileNameType {
+    type string {
+      length "1 .. 32";
+    }
+  }
+
+  typedef snmpNotifyFilterMaskType {
+    type tailf:hex-list {
+      tailf:value-length "min .. 16";
+      pattern "(((([0-9A-Fa-f]{2}):){0,15}([0-9A-Fa-f]{2}))){0,1}";
+    }
+  }
+
+  typedef snmpNotifyFilterTypeType {
+    type enumeration {
+      enum "included" {
+        value 1;
+      }
+      enum "excluded" {
+        value 2;
+      }
+    }
+  }
+
+  container SNMP-NOTIFICATION-MIB {
+    container snmpNotifyTable {
+      list snmpNotifyEntry {
+        tailf:sort-order "snmp-implied";
+        tailf:snmp-oid "1.3.6.1.6.3.13.1.1";
+        key "snmpNotifyName";
+        leaf snmpNotifyName {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.1.1.1";
+          type snmpNotifyNameType;
+        }
+        leaf snmpNotifyTag {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.1.1.2";
+          type SNMP_TARGET_MIB:SnmpTagValue;
+        }
+        leaf snmpNotifyType {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.1.1.3";
+          type snmpNotifyTypeType;
+          default "trap";
+        }
+        leaf snmpNotifyStorageType {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.1.1.4";
+          type SNMPv2_TC:StorageType;
+          default "nonVolatile";
+        }
+      }
+    }
+    container snmpNotifyFilterProfileTable {
+      tailf:hidden "full";
+      presence "SNMP Notify Filter Profile Table";
+      list snmpNotifyFilterProfileEntry {
+        tailf:sort-order "snmp-implied";
+        tailf:snmp-oid "1.3.6.1.6.3.13.1.2";
+        key "snmpTargetParamsName";
+        leaf snmpTargetParamsName {
+          tailf:snmp-oid "1.3.6.1.6.3.12.1.3.1.1";
+          type snmpTargetParamsNameType;
+        }
+        leaf snmpNotifyFilterProfileName {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.2.1.1";
+          type snmpNotifyFilterProfileNameType;
+        }
+        leaf snmpNotifyFilterProfileStorType {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.2.1.2";
+          type SNMPv2_TC:StorageType;
+          default "nonVolatile";
+        }
+      }
+    }
+    container snmpNotifyFilterTable {
+      tailf:hidden "full";
+      presence "SNMP Notify Filter Table";
+      list snmpNotifyFilterEntry {
+        tailf:sort-order "snmp-implied";
+        tailf:snmp-oid "1.3.6.1.6.3.13.1.3";
+        key "snmpNotifyFilterProfileName snmpNotifyFilterSubtree";
+        leaf snmpNotifyFilterProfileName {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.2.1.1";
+          type snmpNotifyFilterProfileNameType;
+        }
+        leaf snmpNotifyFilterSubtree {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.3.1.1";
+          type yang:object-identifier;
+        }
+        leaf snmpNotifyFilterMask {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.3.1.2";
+          type snmpNotifyFilterMaskType;
+        }
+        leaf snmpNotifyFilterType {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.3.1.3";
+          type snmpNotifyFilterTypeType;
+          default "included";
+        }
+        leaf snmpNotifyFilterStorageType {
+          tailf:snmp-oid "1.3.6.1.6.3.13.1.3.1.4";
+          type SNMPv2_TC:StorageType;
+          default "nonVolatile";
+        }
+      }
+    }
+  }
+}

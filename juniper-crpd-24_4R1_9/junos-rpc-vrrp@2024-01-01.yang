@@ -1,0 +1,89 @@
+
+/*
+ * Copyright (c) 2025 Juniper Networks, Inc.
+ * All rights reserved.
+ */
+ module junos-rpc-vrrp {
+   namespace "http://yang.juniper.net/junos/rpc/vrrp";
+
+   prefix vrrp;
+
+   import junos-common-types {
+     prefix jt;
+     revision-date 2024-01-01;
+   }
+
+   organization "Juniper Networks, Inc.";
+
+   contact "yang-support@juniper.net";
+
+   description "Junos RPC YANG module for vrrp command(s)";
+
+   revision 2024-01-01 {
+     description "Junos: 20241218.202301_builder.r1463698";
+   }
+
+   rpc get-vrrp-information {
+     description "Show overview of VRRP information";
+     output {
+       container vrrp-information {
+         uses vrrp-information-block;
+       }
+     }
+   }
+   rpc get-vrrp-track-information {
+     description "VRRP track interface information";
+     output {
+       container vrrp-track-information {
+         uses vrrp-track-information-block;
+       }
+     }
+   }
+   grouping vrrp-information-block {
+     list vrrp-interface {
+       leaf interface {
+         type string;
+       }
+       leaf interface-state {
+         type string;
+       }
+       leaf groups {
+         type string;
+       }
+       leaf vrrp-state {
+         type string;
+       }
+       leaf vrrp-mode {
+         type string;
+       }
+       leaf local-interface-address {
+         type string;
+       }
+       leaf virtual-ip-address {
+         type string;
+       }
+     }
+   }
+   grouping vrrp-track-information-block {
+     list vrrp-track-interface {
+       leaf tracked-interface {
+         type string;
+       }
+       leaf interface-state {
+         type string;
+       }
+       leaf interface {
+         type string;
+       }
+       leaf groups {
+         type string;
+       }
+       leaf vrrp-state {
+         type string;
+       }
+       leaf vrrp-priority {
+         type string;
+       }
+     }
+   }
+ }
