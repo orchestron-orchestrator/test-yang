@@ -1,0 +1,27 @@
+module orchestron-device {
+  yang-version "1.1";
+  namespace "http://orchestron.org/yang/orchestron-device.yang";
+  prefix "odev";
+
+  description "Device config";
+
+  container devices {
+    list device {
+      key name;
+
+      orchestron:device-config;
+
+      leaf name {
+        type string;
+      }
+
+      leaf modset_id {
+        type string;
+      }
+
+      //anydata config {
+      //  description "Device configuration";
+      //}
+    }
+  }
+}
