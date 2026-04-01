@@ -10,13 +10,21 @@ module netinfra {
   import ietf-inet-types {
     prefix inet;
   }
+  import stratoweave {
+    prefix sw;
+  }
+  import ietf-yang-tmf-map {
+    prefix tmf;
+  }
 
   container netinfra {
     description "Network infrastructure";
     list router {
+      description "Network Infrastructure Router";
       key name;
 
-      orchestron:transform sorespo.cfs.Router;
+      sw:transform sorespo.cfs.Router;
+      tmf:cfs-service "Router";
 
       leaf name {
         type string;
@@ -38,21 +46,26 @@ module netinfra {
         mandatory true;
       }
       leaf mock {
-        type enumeration {
-          enum cisco-ios-xr;
-          enum juniper-junos;
-        }
+        type boolean;
+        default false;
       }
       leaf approval-required {
         type boolean;
         default false;
+      }
+      container feature-flags {
+        leaf runtime-schema-fetch {
+          type boolean;
+          default false;
+        }
       }
     }
 
     list backbone-link {
       key "left-router left-interface right-router right-interface";
 
-      orchestron:transform sorespo.cfs.BBLink;
+      sw:transform sorespo.cfs.BBLink;
+      tmf:cfs-service "Backbone Link";
 
       leaf left-router {
         type string;

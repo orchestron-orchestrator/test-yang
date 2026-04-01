@@ -9,13 +9,16 @@ module sorespo-rfs {
     import ietf-inet-types {
       prefix inet;
     }
+    import stratoweave {
+      prefix sw;
+    }
 
     augment "/orfs:rfs" {
         // TODO: should really be a P-container
         list base-config {
             key name;
 
-            orchestron:rfs-transform sorespo.rfs.BaseConfig;
+            sw:rfs-transform sorespo.rfs.BaseConfig;
 
             leaf name {
                 type string;
@@ -49,7 +52,7 @@ module sorespo-rfs {
         list backbone-interface {
             key name;
 
-            orchestron:rfs-transform sorespo.rfs.BBInterface;
+            sw:rfs-transform sorespo.rfs.BBInterface;
 
             leaf name {
                 type string;
@@ -102,7 +105,7 @@ module sorespo-rfs {
             }
 
             container dynstate {
-                orchestron:dynstate;
+                sw:dynstate;
                 leaf protocols-enabled {
                     type boolean;
                 }
@@ -114,7 +117,7 @@ module sorespo-rfs {
 
         list ibgp-neighbor {
           key address;
-          orchestron:rfs-transform sorespo.rfs.IbgpNeighbor;
+          sw:rfs-transform sorespo.rfs.IbgpNeighbor;
           leaf address {
             type inet:ip-address;
           }
@@ -131,7 +134,7 @@ module sorespo-rfs {
 
         list vrf {
           key name;
-          orchestron:rfs-transform sorespo.rfs.Vrf;
+          sw:rfs-transform sorespo.rfs.Vrf;
           leaf name {
             type string;
           }
@@ -155,7 +158,7 @@ module sorespo-rfs {
 
         list vrf-interface {
             key "name";
-            orchestron:rfs-transform sorespo.rfs.VrfInterface;
+            sw:rfs-transform sorespo.rfs.VrfInterface;
             leaf name {
                 type string;
             }
@@ -181,7 +184,7 @@ module sorespo-rfs {
 
     list ebgp-customer {
       key "vrf address";
-      orchestron:rfs-transform sorespo.rfs.EbgpCustomer;
+      sw:rfs-transform sorespo.rfs.EbgpCustomer;
       leaf vrf {
         type string;
       }

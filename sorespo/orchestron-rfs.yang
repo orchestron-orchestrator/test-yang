@@ -6,13 +6,16 @@ module orchestron-rfs {
   import ietf-inet-types {
     prefix inet;
   }
+  import stratoweave {
+    prefix sw;
+  }
 
   description "RFS services";
 
   list device {
     key name;
 
-    orchestron:device;
+    sw:device;
 
     leaf name {
       type string;
