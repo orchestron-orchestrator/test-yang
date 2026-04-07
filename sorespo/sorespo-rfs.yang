@@ -3,8 +3,8 @@ module sorespo-rfs {
     namespace "http://example.com/sorespo-rfs";
     prefix "sorespo-rfs";
 
-    import orchestron-rfs {
-        prefix orfs;
+    import stratoweave-rfs {
+        prefix sw-rfs;
     }
     import ietf-inet-types {
       prefix inet;
@@ -13,16 +13,10 @@ module sorespo-rfs {
       prefix sw;
     }
 
-    augment "/orfs:rfs" {
-        // TODO: should really be a P-container
-        list base-config {
-            key name;
+    augment "/sw-rfs:rfs" {
+        container base-config {
 
             sw:rfs-transform sorespo.rfs.BaseConfig;
-
-            leaf name {
-                type string;
-            }
 
             leaf role {
                 type string;
@@ -85,15 +79,6 @@ module sorespo-rfs {
                     mandatory true;
                 }
                 leaf interface {
-                    type string;
-                    mandatory true;
-                }
-            }
-            // Temporaryly pass the local device name to the backbone interface
-            // to be able set the ISIS NET to work around the Acton YANG leaf-list
-            // merge issue.
-            container local {
-                leaf device {
                     type string;
                     mandatory true;
                 }

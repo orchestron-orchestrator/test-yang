@@ -36,14 +36,18 @@ module netinfra-inter {
         type string;
       }
       leaf mock {
-        type enumeration {
-          enum cisco-ios-xr;
-          enum juniper-junos;
-        }
+        type boolean;
+        default false;
       }
       leaf approval-required {
         type boolean;
         default false;
+      }
+      container feature-flags {
+        leaf runtime-schema-fetch {
+          type boolean;
+          default false;
+        }
       }
       container base-config {
         leaf asn {

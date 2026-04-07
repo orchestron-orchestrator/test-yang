@@ -1,7 +1,7 @@
-module orchestron-device {
+module stratoweave-device {
   yang-version "1.1";
-  namespace "http://orchestron.org/yang/orchestron-device.yang";
-  prefix "odev";
+  namespace "http://stratoweave.net/yang/stratoweave-device.yang";
+  prefix "sw-dev";
   import stratoweave {
     prefix sw;
   }

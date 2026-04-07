@@ -1,13 +1,13 @@
-module orchestron-rfs {
+module stratoweave-rfs {
   yang-version "1.1";
-  namespace "http://orchestron.org/yang/orchestron-rfs.yang";
-  prefix "orfs";
+  namespace "http://stratoweave.net/yang/stratoweave-rfs.yang";
+  prefix "sw-rfs";
 
-  import ietf-inet-types {
-    prefix inet;
-  }
   import stratoweave {
     prefix sw;
+  }
+  import ietf-inet-types {
+    prefix inet;
   }
 
   description "RFS services";
@@ -95,6 +95,10 @@ module orchestron-rfs {
     }
 
     container mock {
+      leaf enabled {
+        type boolean;
+        default "false";
+      }
       leaf-list preset {
         type enumeration {
           enum cisco-ios-xr;
@@ -123,6 +127,13 @@ module orchestron-rfs {
       leaf connection {
         type boolean;
         default "false";
+      }
+    }
+
+    container feature-flags {
+      leaf runtime-schema-fetch {
+        type boolean;
+        default false;
       }
     }
 
